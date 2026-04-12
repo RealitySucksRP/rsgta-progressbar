@@ -3,7 +3,7 @@ games { 'gta5' }
 lua54 'yes'
 
 name 'rsgta-progressbar'
-author 'William Brito — RealitySucksRP'
+author 'William Brito - RealitySucksRP'
 description 'Dual style GTA V branded progress bar. Free community release. Engine by keep-progressbar.'
 version '3.0.0'
 
