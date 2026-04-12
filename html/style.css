@@ -1,0 +1,219 @@
+/* ═══════════════════════════════════════════════════════════
+   rsgta-progressbar  |  style.css
+   Dual style GTA V / branded skin for keep-progressbar engine
+   ═══════════════════════════════════════════════════════════ */
+
+:root { --accent: #e8c840; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: transparent;
+  font-family: 'Arial Narrow', Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  color: #fff;
+}
+
+/* ── Wrapper ── */
+.progress-app-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.progress-app-wrapper--center-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 80px;
+}
+
+/* ── Shell ── */
+.progress-app {
+  width: 320px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  pointer-events: auto;
+}
+
+/* ── Brand header ── */
+.brand-header {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.brand-logo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  border-radius: 3px;
+  border: 1px solid var(--accent);
+  opacity: 0.9;
+}
+
+.brand-name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(232,200,64,0.4);
+}
+
+/* ── Label row ── */
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.progress-app__header-left { display: flex; }
+
+.progress-app__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.88);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  font-family: 'Arial Narrow', Arial, sans-serif;
+}
+
+/* ── Stage dots ── */
+.progress-app__status-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.progress-app__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: background-color 0.3s;
+}
+
+.progress-app__dot--active {
+  background: #fff;
+}
+
+/* ── Stage message ── */
+.progress-app__status-text {
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.08em;
+  min-height: 16px;
+}
+
+/* ── Countdown ── */
+.progress-app__countdown {
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.progress-app__countdown__timer {
+  font-weight: bold;
+  color: rgba(255,255,255,0.6);
+  width: 2.5rem;
+  text-align: center;
+}
+
+/* ── GTA V stock bar ── */
+.track-gta {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.15);
+  overflow: hidden;
+  border-radius: 0;
+  margin: 0;
+}
+
+.track-gta .progress-app__progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+/* ── Branded bar ── */
+.track-brand {
+  width: 100%;
+  height: 5px;
+  background: rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  overflow: hidden;
+  position: relative;
+  margin: 0;
+}
+
+.track-brand::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+.fill-brand {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  transition: background-color 0.3s ease;
+}
+
+/* ── Footer ── */
+.progress-app__footer {
+  font-size: 9px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+  padding-top: 2px;
+}
+
+.progress-app__footer code {
+  background: rgba(0,0,0,0.4);
+  color: rgba(255,255,255,0.6);
+  padding: 2px 5px;
+  margin: 0 2px;
+  font-family: inherit;
+}
+
+/* ── Entrance animation ── */
+.animation-center-bottom-enter-from,
+.animation-center-bottom-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.animation-center-bottom-enter-active {
+  transition: all 0.25s ease-out;
+}
+
+.animation-center-bottom-enter-to,
+.animation-center-bottom-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animation-center-bottom-leave-active {
+  transition: all 0.2s ease-in;
+}

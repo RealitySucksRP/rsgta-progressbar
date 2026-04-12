@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RealitySucks GTA V Progress</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="themes.css" />
+</head>
+<body>
+  <div id="app">
+    <transition name="animation-center-bottom">
+      <div
+        class="progress-app-wrapper progress-app-wrapper--center-bottom"
+        v-if="is_active"
+      >
+        <div class="progress-app">
+
+          <!-- Brand header — shown via config -->
+          <div class="brand-header" id="brand-header">
+            <img src="img/logo.png" class="brand-logo" alt="" onerror="this.style.display='none'" />
+            <span class="brand-name" id="brand-name">REALITY SUCKS RP</span>
+          </div>
+
+          <!-- Label row -->
+          <div class="label-row">
+            <div class="progress-app__header-left">
+              <h1 class="progress-app__title">{{ window_config.label }}</h1>
+            </div>
+            <div class="progress-app__status-dots" v-if="stages.length > 1">
+              <div
+                v-for="(stage, index) in stages"
+                :key="index"
+                class="progress-app__dot"
+                :class="{ 'progress-app__dot--active': stage.finished === true }"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Stage message -->
+          <div class="progress-app__status-text" v-if="stages.length > 1">
+            {{ stages[current_stage_index].message }}
+          </div>
+
+          <!-- Countdown -->
+          <div class="progress-app__countdown">
+            <div class="progress-app__countdown__text">
+              {{ locale.estimated_time_left }}
+            </div>
+            <div class="progress-app__countdown__timer">
+              {{ remaining_time }} {{ locale.time_unit || 's' }}
+            </div>
+          </div>
+
+          <!-- GTA V stock bar -->
+          <div class="progress-app__progress-container progress-app__progress-container--segmented track-gta" id="track-gta">
+            <div
+              class="progress-app__progress-bar"
+              :style="{
+                width: progress + '%',
+                backgroundColor: stages[current_stage_index].progressColor
+              }"
+            ></div>
+          </div>
+
+          <!-- Branded bar -->
+          <div class="progress-app__progress-container track-brand" id="track-brand" style="display:none">
+            <div
+              class="progress-app__progress-bar fill-brand"
+              :style="{ width: progress + '%' }"
+            ></div>
+          </div>
+
+          <!-- Footer / cancel -->
+          <div class="progress-app__footer" v-if="can_cancel">
+            <div v-html="locale.can_cancel"></div>
+          </div>
+
+        </div>
+      </div>
+    </transition>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="script.js"></script>
+
+  <!-- Style switcher — reads window_config.style from SET_LOCALE or START_PROGRESS -->
+  <script>
+    window.addEventListener('message', function(e) {
+      const d = e.data;
+      if (!d || d.action !== 'START_PROGRESS') return;
+      const data = d.data || d;
+      const s = data.style || 1;
+      const accent = data.accentColor || '#e8c840';
+      const serverName = data.serverName || 'REALITY SUCKS RP';
+
+      document.documentElement.style.setProperty('--accent', accent);
+      document.getElementById('brand-name').textContent = serverName;
+
+      const brandHdr  = document.getElementById('brand-header');
+      const trackGta  = document.getElementById('track-gta');
+      const trackBrand = document.getElementById('track-brand');
+
+      if (s === 2) {
+        brandHdr.style.display   = 'flex';
+        trackGta.style.display   = 'none';
+        trackBrand.style.display = 'block';
+      } else {
+        brandHdr.style.display   = 'none';
+        trackGta.style.display   = 'block';
+        trackBrand.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
