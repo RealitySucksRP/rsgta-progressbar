@@ -7,7 +7,7 @@ Framework: QBCore | Version: 3.0.0 | License: MIT | Price: Free
 
 ## // 01 - WHAT IT DOES
 
-A drop-in progress bar that replaces every other progress bar resource on your server automatically. Two visual styles -- one that looks exactly like GTA V native bar, and one that shows your server logo, name, and accent color above the bar.
+A drop-in progress bar that replaces every other progress bar resource on your server automatically. Two visual styles -- one that looks exactly like GTA V native bar, and one that shows your server name, logo, and accent colors.
 
 Any resource already calling progressbar or esx_progressbar exports gets routed here with zero changes. ox_lib compatible. QBCore native.
 
@@ -121,3 +121,9 @@ Engine based on keep-progressbar. Branded UI and QBCore integration by RealitySu
 // Made by RealitySucksRP
 // Built for the community -- not for profit.
 // Reality Sucks. Script anyway.
+
+---
+
+## Support This Project
+
+<a href='https://ko-fi.com/R6R51XYJ6N' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
