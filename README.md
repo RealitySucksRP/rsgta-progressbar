@@ -3,7 +3,7 @@
 
 Framework: QBCore | Version: 3.0.0 | License: MIT | Price: Free
 
----
+CHECK OUT MY TEBEX STORE: https://reality-sucks-rp-webstore.tebex.io/
 
 ## // 01 - WHAT IT DOES
 
