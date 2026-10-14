@@ -3,114 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RealitySucks GTA V Progress</title>
+  <title>RS Field Terminal Progress UI</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="themes.css" />
 </head>
 <body>
-  <div id="app">
-    <transition name="animation-center-bottom">
-      <div
-        class="progress-app-wrapper progress-app-wrapper--center-bottom"
-        v-if="is_active"
-      >
-        <div class="progress-app">
+  <div id="app" class="nui-hidden">
+    <div id="terminal-wrapper" class="terminal-wrapper" data-theme="default" data-position="center-bottom" aria-hidden="true">
+      <div class="terminal-device">
+        <div class="case-rivet rivet-a"></div><div class="case-rivet rivet-b"></div>
+        <div class="case-rivet rivet-c"></div><div class="case-rivet rivet-d"></div>
+        <div class="case-marking">RS FIELD TERMINAL</div>
+        <div class="case-submark">FIELD SERIES // FT-04</div>
+        <div class="case-controls" aria-hidden="true">
+          <div class="control-slot"></div>
+          <div class="control-knob"></div>
+          <div class="control-led"></div>
+          <div class="control-grille"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
 
-          <!-- Brand header — shown via config -->
-          <div class="brand-header" id="brand-header">
-            <img src="img/logo.png" class="brand-logo" alt="" onerror="this.style.display='none'" />
-            <span class="brand-name" id="brand-name">REALITY SUCKS RP</span>
-          </div>
+        <div class="terminal-screen">
+          <div class="screen-fill"></div>
+          <div class="screen-glow"></div>
+          <div class="screen-scanlines"></div>
 
-          <!-- Label row -->
-          <div class="label-row">
-            <div class="progress-app__header-left">
-              <h1 class="progress-app__title">{{ window_config.label }}</h1>
+          <div class="screen-inner">
+            <div class="terminal-meta-row">
+              <span class="meta-left"><i class="meta-blip"></i>RS FIELD TERMINAL</span>
+              <span class="meta-right" id="statusText">STATUS: ACTIVE</span>
             </div>
-            <div class="progress-app__status-dots" v-if="stages.length > 1">
-              <div
-                v-for="(stage, index) in stages"
-                :key="index"
-                class="progress-app__dot"
-                :class="{ 'progress-app__dot--active': stage.finished === true }"
-              ></div>
+
+            <div class="task-block">
+              <div id="taskLabel" class="task-label">WORKING...</div>
+              <div id="taskStage" class="task-stage">Initializing process</div>
+              <div class="task-divider"><span class="task-chevron"></span></div>
             </div>
-          </div>
 
-          <!-- Stage message -->
-          <div class="progress-app__status-text" v-if="stages.length > 1">
-            {{ stages[current_stage_index].message }}
-          </div>
-
-          <!-- Countdown -->
-          <div class="progress-app__countdown">
-            <div class="progress-app__countdown__text">
-              {{ locale.estimated_time_left }}
+            <div class="main-progress-row">
+              <div class="progress-tube">
+                <div id="progressFill" class="progress-fill"></div>
+                <div class="tube-segments"></div>
+              </div>
+              <div class="readout readout--percent">
+                <span id="percentValue">0</span><span class="unit unit--percent">%</span>
+              </div>
+              <div class="readout readout--timer">
+                <span id="timeValue">00:00.0</span>
+              </div>
             </div>
-            <div class="progress-app__countdown__timer">
-              {{ remaining_time }} {{ locale.time_unit || 's' }}
+
+            <div class="telemetry-row">
+              <div class="telemetry telemetry--left">
+                <div class="telemetry-title">SIG</div>
+                <div class="signal-box">
+                  <svg class="signal-wave" viewBox="0 0 180 72" preserveAspectRatio="none" aria-hidden="true">
+                    <polyline points="0,40 14,40 22,34 30,40 44,40 52,12 60,60 70,40 88,40 96,44 104,36 118,40 128,14 136,58 146,40 180,40"></polyline>
+                  </svg>
+                  <div class="signal-bars" aria-hidden="true">
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                    <span class="bar bar--dim"></span><span class="bar bar--dim"></span>
+                  </div>
+                </div>
+                <div class="sys-ok">SYS: OK</div>
+              </div>
+
+              <div class="telemetry telemetry--right">
+                <div class="phase-row">
+                  <div id="phaseValue" class="phase-value">PHASE 01 / 01</div>
+                  <div id="stageNodes" class="stage-nodes"></div>
+                </div>
+                <div class="micro-dots"></div>
+                <div class="footer-row">
+                  <div id="cancelHint" class="cancel-hint">PRESS X TO CANCEL</div>
+                  <div class="mini-buttons" aria-hidden="true">
+                    <div class="mini-button"><span class="mini-button__label">PWR</span><span class="mini-button__lamp"></span></div>
+                    <div class="mini-button"><span class="mini-button__label">DATA</span><span class="mini-button__lamp"></span></div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <!-- GTA V stock bar -->
-          <div class="progress-app__progress-container progress-app__progress-container--segmented track-gta" id="track-gta">
-            <div
-              class="progress-app__progress-bar"
-              :style="{
-                width: progress + '%',
-                backgroundColor: stages[current_stage_index].progressColor
-              }"
-            ></div>
+            <div class="screen-ruler" aria-hidden="true"></div>
           </div>
-
-          <!-- Branded bar -->
-          <div class="progress-app__progress-container track-brand" id="track-brand" style="display:none">
-            <div
-              class="progress-app__progress-bar fill-brand"
-              :style="{ width: progress + '%' }"
-            ></div>
-          </div>
-
-          <!-- Footer / cancel -->
-          <div class="progress-app__footer" v-if="can_cancel">
-            <div v-html="locale.can_cancel"></div>
-          </div>
-
         </div>
       </div>
-    </transition>
+    </div>
   </div>
 
-  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="rs-uiscale.js"></script>
   <script src="script.js"></script>
-
-  <!-- Style switcher — reads window_config.style from SET_LOCALE or START_PROGRESS -->
-  <script>
-    window.addEventListener('message', function(e) {
-      const d = e.data;
-      if (!d || d.action !== 'START_PROGRESS') return;
-      const data = d.data || d;
-      const s = data.style || 1;
-      const accent = data.accentColor || '#e8c840';
-      const serverName = data.serverName || 'REALITY SUCKS RP';
-
-      document.documentElement.style.setProperty('--accent', accent);
-      document.getElementById('brand-name').textContent = serverName;
-
-      const brandHdr  = document.getElementById('brand-header');
-      const trackGta  = document.getElementById('track-gta');
-      const trackBrand = document.getElementById('track-brand');
-
-      if (s === 2) {
-        brandHdr.style.display   = 'flex';
-        trackGta.style.display   = 'none';
-        trackBrand.style.display = 'block';
-      } else {
-        brandHdr.style.display   = 'none';
-        trackGta.style.display   = 'block';
-        trackBrand.style.display = 'none';
-      }
-    });
-  </script>
 </body>
 </html>

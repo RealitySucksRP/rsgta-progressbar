@@ -1,281 +1,417 @@
-if (!window.Vue) {
-    const app = document.getElementById('#app');
-    if (app) app.style.display = 'none';
-    console.error('[keep-progreesbar] Failed to load vue from CDN');
-} else {
-    const { createApp, ref, onMounted, onBeforeUnmount } = Vue;
+(function () {
+  const app = document.getElementById('app');
+  const wrapper = document.getElementById('terminal-wrapper');
+  const taskLabel = document.getElementById('taskLabel');
+  const taskStage = document.getElementById('taskStage');
+  const progressFill = document.getElementById('progressFill');
+  const percentValue = document.getElementById('percentValue');
+  const timeValue = document.getElementById('timeValue');
+  const phaseValue = document.getElementById('phaseValue');
+  const stageNodes = document.getElementById('stageNodes');
+  const cancelHint = document.getElementById('cancelHint');
+  const statusText = document.getElementById('statusText');
 
-    createApp({
-        setup() {
-            const window_config = ref({
-                label: 'Progress',
-                icon: 'fa-solid fa-spinner',
-                theme: 'default',
-            });
+  const state = {
+    windowConfig: {
+      label: 'Progress',
+      theme: 'default',
+      position: 'center-bottom'
+    },
+    stages: [],
+    currentStageIndex: 0,
+    totalDuration: 0,
+    canCancel: false,
+    locale: {},
+    progress: 0,
+    active: false,
+    intervalId: null,
+    remainingIntervalId: null,
+    stageStartTime: null,
+    finishing: false,
+    sequence: 0,
+    sessionId: null,
+  };
 
-            const stages = ref([]);
-            const progress = ref(0);
-            const current_stage_index = ref(0);
-            const total_duration = ref(0);
-            const can_cancel = ref(false);
-            const remaining_time = ref(0);
-            const is_active = ref(false);
-            const locale = ref({});
+  function getParentName() {
+    return typeof GetParentResourceName === 'function'
+      ? GetParentResourceName()
+      : 'progressbar';
+  }
 
-            let interval_id = null;
-            let stage_start_time = null;
-            let remaining_interval_id = null;
+  function postNui(action, payload) {
+    const body = payload && typeof payload === 'object' ? { ...payload } : {};
+    if (state.sessionId !== null && state.sessionId !== undefined && body.sessionId === undefined) {
+      body.sessionId = state.sessionId;
+    }
 
-            function update_remaining_time() {
-                let elapsed = 0;
-                for (let i = 0; i < current_stage_index.value; i++) {
-                    elapsed += stages.value[i].duration;
-                }
-                if (stage_start_time) elapsed += Date.now() - stage_start_time;
-                let remaining = Math.max(total_duration.value - elapsed, 0) / 1000;
-                remaining_time.value = remaining.toFixed(1);
-            }
+    try {
+      return fetch(`https://${getParentName()}/${action}`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      }).catch(() => {});
+    } catch (e) {
+      return Promise.resolve();
+    }
+  }
 
-            function start_progress() {
-                is_active.value = true;
-                progress.value = 0;
-                current_stage_index.value = 0;
-                remaining_interval_id = setInterval(update_remaining_time, 50);
-                run_stage();
-            }
+  function sanitizeText(value, fallback) {
+    if (typeof value === 'string' && value.trim() !== '') return value.trim();
+    return fallback || '';
+  }
 
-            function stage_percent_start(index) {
-                if (!total_duration.value) return 0;
-                const sum_before = stages.value
-                    .slice(0, index)
-                    .reduce((sum, s) => sum + s.duration, 0);
-                return (sum_before / total_duration.value) * 100;
-            }
+  function stripHtml(value) {
+    if (!value) return '';
+    const div = document.createElement('div');
+    div.innerHTML = value;
+    return (div.textContent || div.innerText || '').trim();
+  }
 
-            function stage_percent_end(index) {
-                if (!total_duration.value) return 100;
-                const sum_to = stages.value
-                    .slice(0, index + 1)
-                    .reduce((sum, s) => sum + s.duration, 0);
-                return (sum_to / total_duration.value) * 100;
-            }
+  function formatRemaining(ms) {
+    const safe = Math.max(0, Math.floor(ms));
+    const totalSeconds = safe / 1000;
 
-            function run_stage() {
-                if (current_stage_index.value >= stages.value.length) {
-                    finish(false);
-                    return;
-                }
+    if (totalSeconds >= 3600) {
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = Math.floor(totalSeconds % 60);
+      return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
 
-                const stage = stages.value[current_stage_index.value];
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${seconds.toFixed(1).padStart(4, '0')}`;
+  }
 
-                if (stage.condition) {
-                    return;
-                }
+  function getProgressPercent() {
+    return Math.max(0, Math.min(100, state.progress));
+  }
 
-                if (stage.minigame) {
-                    fetch(`https://${GetParentResourceName()}/stageMinigame`, {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            stage_index: current_stage_index.value,
-                            stage: stages.value[current_stage_index.value],
-                            timestamp: Date.now(),
-                        }),
-                    });
-                }
+  function getCurrentStage() {
+    return state.stages[state.currentStageIndex] || null;
+  }
 
-                stage_start_time = Date.now();
+  function stagePercentStart(index) {
+    if (!state.totalDuration) return 0;
+    const elapsedBefore = state.stages
+      .slice(0, index)
+      .reduce((sum, stage) => sum + (Number(stage.duration) || 0), 0);
+    return (elapsedBefore / state.totalDuration) * 100;
+  }
 
-                const sp_start = stage_percent_start(current_stage_index.value);
-                const sp_end = stage_percent_end(current_stage_index.value);
+  function stagePercentEnd(index) {
+    if (!state.totalDuration) return 100;
+    const elapsedTo = state.stages
+      .slice(0, index + 1)
+      .reduce((sum, stage) => sum + (Number(stage.duration) || 0), 0);
+    return (elapsedTo / state.totalDuration) * 100;
+  }
 
-                fetch(`https://${GetParentResourceName()}/stageStart`, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        stage: stages.value[current_stage_index.value],
-                        stage_index: current_stage_index.value,
-                        timestamp: Date.now(),
-                    }),
-                });
+  function elapsedBeforeCurrent() {
+    return state.stages
+      .slice(0, state.currentStageIndex)
+      .reduce((sum, stage) => sum + (Number(stage.duration) || 0), 0);
+  }
 
-                clearInterval(interval_id);
-                interval_id = setInterval(() => {
-                    const elapsed = Date.now() - stage_start_time;
-                    const ratio = Math.min(elapsed / stage.duration, 1);
-                    progress.value = sp_start + (sp_end - sp_start) * ratio;
+  function updateRemainingTime() {
+    if (!state.active) return;
+    const runningElapsed = state.stageStartTime ? (Date.now() - state.stageStartTime) : 0;
+    const remaining = Math.max(state.totalDuration - elapsedBeforeCurrent() - runningElapsed, 0);
+    timeValue.textContent = formatRemaining(remaining);
+  }
 
-                    if (ratio >= 1) {
-                        clearInterval(interval_id);
-                        interval_id = null;
+  function renderStageNodes() {
+    const totalStages = Math.max(state.stages.length, 1);
+    stageNodes.innerHTML = '';
 
-                        stages.value[current_stage_index.value].finished = true;
-                        fetch(`https://${GetParentResourceName()}/stageFinished`, {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                stage_index: current_stage_index.value,
-                                stage: stages.value[current_stage_index.value],
-                                timestamp: Date.now(),
-                            }),
-                        });
+    for (let i = 0; i < totalStages; i++) {
+      const node = document.createElement('div');
+      node.className = 'stage-node';
 
-                        if (current_stage_index.value < stages.value.length - 1) {
-                            current_stage_index.value++;
-                            run_stage();
-                        } else {
-                            progress.value = 100;
-                            remaining_time.value = 0;
-                            finish(false);
-                        }
-                    }
-                }, 80);
-            }
+      if (state.stages[i]?.finished) node.classList.add('is-finished');
+      if (!state.stages[i]?.finished && i === state.currentStageIndex) node.classList.add('is-current');
 
-            function skip_current_stage() {
-                if (interval_id) {
-                    clearInterval(interval_id);
-                    interval_id = null;
-                }
-                stage_start_time = null;
+      stageNodes.appendChild(node);
+    }
+  }
 
-                const idx = current_stage_index.value;
-                if (stages.value[idx]) {
-                    stages.value[idx].finished = true;
-                }
+  function renderText() {
+    const current = getCurrentStage();
+    const totalStages = Math.max(state.stages.length, 1);
+    const currentNumber = Math.min(state.currentStageIndex + 1, totalStages);
 
-                progress.value = stage_percent_end(idx);
-                update_remaining_time();
+    taskLabel.textContent = sanitizeText(state.windowConfig.label, 'WORKING...').toUpperCase();
+    taskStage.textContent = sanitizeText(current?.message, state.windowConfig.label || 'Working...');
+    phaseValue.textContent = `PHASE ${String(currentNumber).padStart(2, '0')} / ${String(totalStages).padStart(2, '0')}`;
+    statusText.textContent = state.active ? 'STATUS: ACTIVE' : 'STATUS: IDLE';
 
-                fetch(`https://${GetParentResourceName()}/stageFinished`, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        stage_index: idx,
-                        stage: stages.value[idx],
-                        skipped: true,
-                        timestamp: Date.now(),
-                    }),
-                });
+    const cancelText = state.canCancel
+      ? (stripHtml(state.locale.can_cancel) || 'Press Cancel Key to Cancel')
+      : 'ACTION LOCKED';
 
-                if (idx < stages.value.length - 1) {
-                    current_stage_index.value++;
-                    setTimeout(run_stage, 10);
-                } else {
-                    remaining_time.value = 0;
-                    progress.value = 100;
-                    finish(false);
-                }
-            }
+    cancelHint.textContent = cancelText.toUpperCase();
+    cancelHint.classList.toggle('is-locked', !state.canCancel);
+  }
 
-            function finish(cancelled) {
-                clearInterval(interval_id);
-                clearInterval(remaining_interval_id);
-                remaining_interval_id = null;
-                interval_id = null;
-                stage_start_time = null;
+  function renderProgress() {
+    const pct = getProgressPercent();
+    progressFill.style.width = `${pct}%`;
+    percentValue.textContent = String(pct >= 100 ? 100 : Math.max(0, Math.floor(pct)));
+  }
 
-                setTimeout(() => {
-                    is_active.value = false;
+  function renderAll() {
+    renderText();
+    renderStageNodes();
+    renderProgress();
+    updateRemainingTime();
+  }
 
-                    fetch(`https://${GetParentResourceName()}/progressFinished`, {
-                        method: 'POST',
-                        body: JSON.stringify({ cancelled }),
-                    });
+  function clearTimers() {
+    if (state.intervalId) {
+      clearInterval(state.intervalId);
+      state.intervalId = null;
+    }
+    if (state.remainingIntervalId) {
+      clearInterval(state.remainingIntervalId);
+      state.remainingIntervalId = null;
+    }
+    state.stageStartTime = null;
+  }
 
-                    stages.value = {};
-                    progress.value = 0;
-                    total_duration.value = 0;
-                    remaining_time.value = 0;
-                }, 250);
-            }
+  function resetState() {
+    clearTimers();
+    state.stages = [];
+    state.currentStageIndex = 0;
+    state.totalDuration = 0;
+    state.progress = 0;
+    state.active = false;
+    state.finishing = false;
+    state.sessionId = null;
+    progressFill.style.width = '0%';
+    percentValue.textContent = '0';
+    timeValue.textContent = '00:00.0';
+    stageNodes.innerHTML = '';
+  }
 
-            function handle_message(event) {
-                const { action, data } = event.data;
+  function hideUi() {
+    wrapper.classList.remove('is-visible');
+    wrapper.setAttribute('aria-hidden', 'true');
+    setTimeout(() => {
+      if (!state.active) {
+        app.classList.add('nui-hidden');
+      }
+    }, 190);
+  }
 
-                if (action === 'START_PROGRESS') {
-                    window_config.value.label = data.label || 'Progress';
-                    window_config.value.icon = data.icon || 'fa-solid fa-spinner';
-                    window_config.value.theme = data.theme || 'default';
-                    window_config.value.position = data.position || 'center-bottom';
-                    window_config.value.iconColor = data.iconColor || '#ff4b5c';
-                    can_cancel.value = !!data.canCancel;
+  function finish(cancelled) {
+    if (state.finishing) return;
+    state.finishing = true;
+    clearTimers();
+    const sequence = state.sequence;
 
-                    stages.value =
-                        data.stages && data.stages.length > 0
-                            ? data.stages
-                            : [
-                                  {
-                                      message: data.label || 'Working...',
-                                      duration: data.duration || 3000,
-                                      progressColor: data.progressColor,
-                                  },
-                              ];
+    if (!cancelled) {
+      state.progress = 100;
+      renderProgress();
+      timeValue.textContent = formatRemaining(0);
+      statusText.textContent = 'STATUS: COMPLETE';
+    } else {
+      statusText.textContent = 'STATUS: CANCELLED';
+    }
 
-                    total_duration.value = stages.value.reduce((sum, s) => sum + s.duration, 0);
+    setTimeout(() => {
+      if (state.sequence !== sequence) return;
+      state.active = false;
+      hideUi();
+      postNui('progressFinished', { cancelled });
+      setTimeout(() => {
+        if (state.sequence === sequence && !state.active) resetState();
+      }, 200);
+    }, 230);
+  }
 
-                    start_progress();
-                } else if (action === 'CANCEL') {
-                    finish(true);
-                } else if (action === 'CONDITIONAL_SKIP') {
-                    stages.value[current_stage_index.value].finished = true;
-                    fetch(`https://${GetParentResourceName()}/stageFinished`, {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            stage: stages.value[current_stage_index.value],
-                            stage_index: current_stage_index.value,
-                            timestamp: Date.now(),
-                        }),
-                    });
-                    current_stage_index.value++;
-                    run_stage();
-                } else if (action === 'MINIGAME_RESULT') {
-                    if (
-                        data.result === true &&
-                        current_stage_index.value === data.stage_index - 1
-                    ) {
-                        skip_current_stage();
-                    } else {
-                        let stage = stages.value[current_stage_index.value];
-                        fetch(`https://${GetParentResourceName()}/minigameFailed`, {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                stage_index: current_stage_index.value,
-                                stage: stage,
-                                data,
-                                timestamp: Date.now(),
-                            }),
-                        });
+  function runStage() {
+    if (!state.active) return;
 
-                        if (stage.cancelMode === 'hard') {
-                            finish(true);
-                        }
-                    }
-                } else if (action === 'SET_LOCALE') {
-                    locale.value = data.locale;
-                }
-            }
+    if (state.currentStageIndex >= state.stages.length) {
+      finish(false);
+      return;
+    }
 
-            onMounted(() => {
-                window.addEventListener('message', handle_message);
-                fetch(`https://${GetParentResourceName()}/ready`, {
-                    method: 'POST',
-                    body: JSON.stringify({ timestamp: Date.now() }),
-                });
-            });
+    const stage = getCurrentStage();
+    if (!stage) {
+      finish(false);
+      return;
+    }
 
-            onBeforeUnmount(() => {
-                clearInterval(interval_id);
-                clearInterval(remaining_interval_id);
-                window.removeEventListener('message', handle_message);
-            });
+    renderAll();
 
-            return {
-                locale,
-                window_config,
-                stages,
-                progress,
-                current_stage_index,
-                remaining_time,
-                can_cancel,
-                is_active,
-            };
-        },
-    }).mount('#app');
-}
+    postNui('stageStart', {
+      stage_index: state.currentStageIndex,
+      timestamp: Date.now(),
+    });
+
+    if (stage.condition) return;
+
+    if (stage.minigame) {
+      postNui('stageMinigame', {
+        stage_index: state.currentStageIndex,
+        timestamp: Date.now(),
+      });
+    }
+
+    state.stageStartTime = Date.now();
+    const progressStart = stagePercentStart(state.currentStageIndex);
+    const progressEnd = stagePercentEnd(state.currentStageIndex);
+
+    if (state.intervalId) clearInterval(state.intervalId);
+    state.intervalId = setInterval(() => {
+      const duration = Math.max(Number(stage.duration) || 0, 1);
+      const elapsed = Date.now() - state.stageStartTime;
+      const ratio = Math.min(elapsed / duration, 1);
+
+      state.progress = progressStart + (progressEnd - progressStart) * ratio;
+      renderProgress();
+
+      if (ratio >= 1) {
+        clearInterval(state.intervalId);
+        state.intervalId = null;
+
+        state.stages[state.currentStageIndex].finished = true;
+        renderStageNodes();
+
+        postNui('stageFinished', {
+          stage_index: state.currentStageIndex,
+          stage: state.stages[state.currentStageIndex],
+          timestamp: Date.now(),
+        });
+
+        if (state.currentStageIndex < state.stages.length - 1) {
+          state.currentStageIndex += 1;
+          runStage();
+        } else {
+          finish(false);
+        }
+      }
+    }, 60);
+  }
+
+  function skipCurrentStage() {
+    if (state.intervalId) {
+      clearInterval(state.intervalId);
+      state.intervalId = null;
+    }
+
+    state.stageStartTime = null;
+    const idx = state.currentStageIndex;
+
+    if (state.stages[idx]) {
+      state.stages[idx].finished = true;
+    }
+
+    state.progress = stagePercentEnd(idx);
+    renderAll();
+
+    postNui('stageFinished', {
+      stage_index: idx,
+      skipped: true,
+      timestamp: Date.now(),
+    });
+
+    if (idx < state.stages.length - 1) {
+      state.currentStageIndex += 1;
+      setTimeout(runStage, 10);
+    } else {
+      finish(false);
+    }
+  }
+
+  function startProgress(data) {
+    const nextSequence = state.sequence + 1;
+    resetState();
+    state.sequence = nextSequence;
+    state.sessionId = Number.isFinite(Number(data.sessionId)) ? Number(data.sessionId) : null;
+
+    state.windowConfig.label = sanitizeText(data.label, 'Progress');
+    state.windowConfig.theme = sanitizeText(data.theme, 'default');
+    state.windowConfig.position = sanitizeText(data.position, 'center-bottom');
+    state.canCancel = !!data.canCancel;
+
+    const incomingStages = Array.isArray(data.stages) && data.stages.length > 0
+      ? data.stages
+      : [{
+          message: sanitizeText(data.label, 'Working...'),
+          duration: Number(data.duration) || 3000,
+          progressColor: data.progressColor,
+        }];
+
+    state.stages = incomingStages.map((stage) => ({
+      ...stage,
+      duration: Number(stage.duration) || 0,
+      finished: !!stage.finished,
+      message: sanitizeText(stage.message, sanitizeText(data.label, 'Working...')),
+    }));
+
+    state.totalDuration = state.stages.reduce((sum, stage) => sum + (Number(stage.duration) || 0), 0);
+    state.currentStageIndex = 0;
+    state.progress = 0;
+    state.active = true;
+    state.finishing = false;
+
+    wrapper.dataset.theme = state.windowConfig.theme || 'default';
+    wrapper.dataset.position = state.windowConfig.position || 'center-bottom';
+
+    app.classList.remove('nui-hidden');
+    wrapper.setAttribute('aria-hidden', 'false');
+    requestAnimationFrame(() => wrapper.classList.add('is-visible'));
+
+    renderAll();
+
+    state.remainingIntervalId = setInterval(updateRemainingTime, 60);
+    runStage();
+  }
+
+  function handleMessage(event) {
+    const payload = event.data || {};
+    const action = payload.action;
+    const data = payload.data || {};
+
+    if (action === 'START_PROGRESS') {
+      startProgress(data);
+    } else if (action === 'CANCEL') {
+      finish(true);
+    } else if (action === 'COMPLETE') {
+      finish(false);
+    } else if (action === 'CONDITIONAL_SKIP') {
+      if (!state.active || !state.stages[state.currentStageIndex]) return;
+      state.stages[state.currentStageIndex].finished = true;
+      postNui('stageFinished', {
+        stage_index: state.currentStageIndex,
+        timestamp: Date.now(),
+      });
+      state.currentStageIndex += 1;
+      runStage();
+    } else if (action === 'MINIGAME_RESULT') {
+      if (data.result === true && state.currentStageIndex === data.stage_index - 1) {
+        skipCurrentStage();
+      } else {
+        const stage = getCurrentStage();
+        postNui('minigameFailed', {
+          stage_index: state.currentStageIndex,
+          stage,
+          data,
+          timestamp: Date.now(),
+        });
+
+        if (stage && stage.cancelMode === 'hard') {
+          finish(true);
+        }
+      }
+    } else if (action === 'SET_LOCALE') {
+      state.locale = data.locale || {};
+      renderText();
+    }
+  }
+
+  window.addEventListener('message', handleMessage);
+  postNui('ready', { timestamp: Date.now() });
+
+})();

@@ -1,1 +1,48 @@
-/* rsgta-progressbar | themes.css — accent color driven by config */
+#terminal-wrapper[data-theme="default"],
+#terminal-wrapper[data-theme="theme-0"] {
+  --screen-bg: #071005;
+  --screen-bg-2: #0b1608;
+  --screen-edge: #89ff4f;
+  --screen-muted: rgba(168, 255, 111, 0.62);
+  --screen-soft: rgba(168, 255, 111, 0.34);
+  --screen-dim: rgba(168, 255, 111, 0.16);
+  --screen-accent: #b2ff61;
+  --screen-accent-2: #7df542;
+  --screen-accent-3: #4ec72a;
+}
+
+#terminal-wrapper[data-theme="theme-1"] {
+  --screen-bg: #140e03;
+  --screen-bg-2: #201604;
+  --screen-edge: #ffcd62;
+  --screen-muted: rgba(255, 212, 110, 0.62);
+  --screen-soft: rgba(255, 212, 110, 0.34);
+  --screen-dim: rgba(255, 212, 110, 0.16);
+  --screen-accent: #ffdb7d;
+  --screen-accent-2: #ffc454;
+  --screen-accent-3: #d09224;
+}
+
+#terminal-wrapper[data-theme="theme-2"] {
+  --screen-bg: #050d12;
+  --screen-bg-2: #08161e;
+  --screen-edge: #69f2ff;
+  --screen-muted: rgba(115, 234, 255, 0.62);
+  --screen-soft: rgba(115, 234, 255, 0.34);
+  --screen-dim: rgba(115, 234, 255, 0.16);
+  --screen-accent: #98fbff;
+  --screen-accent-2: #55efff;
+  --screen-accent-3: #26bbd5;
+}
+
+#terminal-wrapper[data-theme="theme-3"] {
+  --screen-bg: #150507;
+  --screen-bg-2: #22090c;
+  --screen-edge: #ff6378;
+  --screen-muted: rgba(255, 132, 146, 0.62);
+  --screen-soft: rgba(255, 132, 146, 0.34);
+  --screen-dim: rgba(255, 132, 146, 0.16);
+  --screen-accent: #ff8ea0;
+  --screen-accent-2: #ff5b73;
+  --screen-accent-3: #d6324b;
+}

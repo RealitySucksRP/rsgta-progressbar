@@ -1,219 +1,652 @@
-/* ═══════════════════════════════════════════════════════════
-   rsgta-progressbar  |  style.css
-   Dual style GTA V / branded skin for keep-progressbar engine
-   ═══════════════════════════════════════════════════════════ */
+:root {
+  /* Master scale knob: raise/lower to resize the whole device. */
+  --ui-scale: 1;
+  /* Device width in px before --ui-scale is applied. */
+  --device-width: 560px;
+  --screen-x: 6.5%;
+  --screen-y: 14.5%;
+  --screen-w: 73%;
+  --screen-h: 72%;
+  --screen-round: 18px;
 
-:root { --accent: #e8c840; }
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  background: transparent;
-  font-family: 'Arial Narrow', Arial, sans-serif;
-  height: 100vh;
-  display: flex;
-  color: #fff;
+  --screen-bg: #071005;
+  --screen-bg-2: #0b1608;
+  --screen-edge: #89ff4f;
+  --screen-muted: rgba(168, 255, 111, 0.62);
+  --screen-soft: rgba(168, 255, 111, 0.34);
+  --screen-dim: rgba(168, 255, 111, 0.16);
+  --screen-accent: #b2ff61;
+  --screen-accent-2: #7df542;
+  --screen-accent-3: #4ec72a;
 }
 
-/* ── Wrapper ── */
-.progress-app-wrapper {
-  position: fixed;
+* {
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body {
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* Never paint a page background - the game shows through. */
+  background: transparent;
 }
 
-.progress-app-wrapper--center-bottom {
+body {
+  font-family: "Consolas", "Lucida Console", "DejaVu Sans Mono", monospace;
+  color: var(--screen-accent);
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.nui-hidden {
+  display: none;
+}
+
+.terminal-wrapper {
+  position: fixed;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding-bottom: 80px;
-}
-
-/* ── Shell ── */
-.progress-app {
-  width: 320px;
+  padding-bottom: 40px;
   background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  pointer-events: auto;
-}
-
-/* ── Brand header ── */
-.brand-header {
-  display: none;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 2px;
-}
-
-.brand-logo {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
-  border-radius: 3px;
-  border: 1px solid var(--accent);
-  opacity: 0.9;
-}
-
-.brand-name {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-  text-shadow: 0 0 10px rgba(232,200,64,0.4);
-}
-
-/* ── Label row ── */
-.label-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-
-.progress-app__header-left { display: flex; }
-
-.progress-app__title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.88);
-  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-  font-family: 'Arial Narrow', Arial, sans-serif;
-}
-
-/* ── Stage dots ── */
-.progress-app__status-dots {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.progress-app__dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  transition: background-color 0.3s;
-}
-
-.progress-app__dot--active {
-  background: #fff;
-}
-
-/* ── Stage message ── */
-.progress-app__status-text {
-  font-size: 10px;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 0.08em;
-  min-height: 16px;
-}
-
-/* ── Countdown ── */
-.progress-app__countdown {
-  font-size: 10px;
-  color: rgba(255,255,255,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-}
-
-.progress-app__countdown__timer {
-  font-weight: bold;
-  color: rgba(255,255,255,0.6);
-  width: 2.5rem;
-  text-align: center;
-}
-
-/* ── GTA V stock bar ── */
-.track-gta {
-  width: 100%;
-  height: 6px;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.15);
-  overflow: hidden;
-  border-radius: 0;
-  margin: 0;
-}
-
-.track-gta .progress-app__progress-bar {
-  height: 100%;
-  width: 0%;
-  background: #ffffff;
-  transition: background-color 0.3s ease;
-}
-
-/* ── Branded bar ── */
-.track-brand {
-  width: 100%;
-  height: 5px;
-  background: rgba(255,255,255,0.08);
-  border-bottom: 1px solid rgba(255,255,255,0.10);
-  overflow: hidden;
-  position: relative;
-  margin: 0;
-}
-
-.track-brand::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: var(--accent);
-  opacity: 0.5;
-}
-
-.fill-brand {
-  height: 100%;
-  width: 0%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
-  transition: background-color 0.3s ease;
-}
-
-/* ── Footer ── */
-.progress-app__footer {
-  font-size: 9px;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-align: right;
-  padding-top: 2px;
-}
-
-.progress-app__footer code {
-  background: rgba(0,0,0,0.4);
-  color: rgba(255,255,255,0.6);
-  padding: 2px 5px;
-  margin: 0 2px;
-  font-family: inherit;
-}
-
-/* ── Entrance animation ── */
-.animation-center-bottom-enter-from,
-.animation-center-bottom-leave-to {
+  pointer-events: none;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(10px);
+  transition: opacity 160ms ease, transform 160ms ease;
 }
 
-.animation-center-bottom-enter-active {
-  transition: all 0.25s ease-out;
-}
-
-.animation-center-bottom-enter-to,
-.animation-center-bottom-leave-from {
+.terminal-wrapper.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.animation-center-bottom-leave-active {
-  transition: all 0.2s ease-in;
+.terminal-wrapper[data-position="center-top"] {
+  align-items: flex-start;
+  padding-bottom: 0;
+  padding-top: 40px;
+}
+
+.terminal-wrapper[data-position="center"] {
+  align-items: center;
+  padding-bottom: 0;
+}
+
+/* ---------------------------------------------------------- device shell */
+
+.terminal-device {
+  position: relative;
+  width: var(--device-width);
+  height: 352px;
+  transform: scale(var(--ui-scale));
+  transform-origin: bottom center;
+  pointer-events: auto;
+  border: 4px solid #272b24;
+  border-radius: 27px 20px 31px 24px;
+  background:
+    linear-gradient(115deg, rgba(255,255,255,.08), transparent 18%, transparent 72%, rgba(255,255,255,.035)),
+    repeating-linear-gradient(8deg, rgba(255,255,255,.018) 0 1px, rgba(0,0,0,.025) 1px 4px),
+    linear-gradient(180deg, #59604c 0%, #3d4438 48%, #2d332c 100%);
+  box-shadow:
+    0 18px 30px rgba(0,0,0,.6),
+    inset 0 0 0 2px rgba(146,157,124,.2),
+    inset 0 -15px 24px rgba(0,0,0,.28);
+  isolation: isolate;
+}
+
+.terminal-device::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(18,22,17,.78);
+  border-radius: 20px 15px 24px 18px;
+  box-shadow: inset 0 0 0 1px rgba(151,163,128,.12);
+  pointer-events: none;
+}
+
+.terminal-device::after {
+  content: '';
+  position: absolute;
+  left: 83.5%;
+  top: 12%;
+  bottom: 12%;
+  width: 1px;
+  background: rgba(20,24,19,.7);
+  box-shadow: 1px 0 rgba(151,163,128,.15);
+}
+
+.case-rivet {
+  position: absolute;
+  z-index: 6;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #9ba28d 0 14%, #555c4d 23%, #20251f 70%);
+  box-shadow: 0 1px 2px rgba(0,0,0,.8);
+}
+.rivet-a { left: 13px; top: 13px; }
+.rivet-b { right: 13px; top: 13px; }
+.rivet-c { left: 13px; bottom: 13px; }
+.rivet-d { right: 13px; bottom: 13px; }
+
+.case-marking {
+  position: absolute;
+  z-index: 5;
+  right: 4.0%;
+  top: 8.8%;
+  width: 10.5%;
+  color: rgba(220,224,199,.72);
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: .9px;
+  text-align: center;
+  text-shadow: 0 1px #111;
+}
+
+.case-submark {
+  position: absolute;
+  z-index: 5;
+  right: 3.4%;
+  bottom: 8.5%;
+  width: 12%;
+  color: rgba(188,194,171,.44);
+  font-size: 5.5px;
+  letter-spacing: .7px;
+  text-align: center;
+}
+
+.case-controls {
+  position: absolute;
+  z-index: 5;
+  right: 3.8%;
+  top: 27%;
+  width: 11.5%;
+  bottom: 21%;
+  border-radius: 8px;
+  border: 1px solid rgba(18,22,17,.82);
+  background: linear-gradient(180deg, rgba(22,27,21,.55), rgba(64,70,57,.28));
+  box-shadow: inset 0 0 0 1px rgba(150,160,128,.08);
+}
+.control-slot {
+  position:absolute; left:18%; right:18%; top:10%; height:7px;
+  border-radius: 5px; background:#171b16; box-shadow: inset 0 1px 3px #000;
+}
+.control-knob {
+  position:absolute; width:31px; height:31px; left:50%; top:31%; transform:translate(-50%,-50%);
+  border-radius:50%;
+  background: radial-gradient(circle at 38% 33%, #858c78 0 10%, #4d5448 25%, #242a23 70%);
+  border:2px solid #1c211b; box-shadow:0 2px 5px #111, inset 0 0 0 2px rgba(155,164,139,.1);
+}
+.control-knob::after { content:''; position:absolute; width:2px; height:10px; background:#a6ad96; left:50%; top:3px; transform:translateX(-50%); }
+.control-led {
+  position:absolute; width:8px; height:8px; border-radius:50%; left:50%; top:49%; transform:translateX(-50%);
+  background: var(--screen-accent-2); box-shadow:0 0 8px var(--screen-accent-2); opacity:.72;
+}
+.control-grille { position:absolute; left:22%; right:22%; bottom:9%; height:30%; display:flex; flex-direction:column; gap:5px; justify-content:center; }
+.control-grille i { display:block; height:3px; border-radius:3px; background:#1c211b; box-shadow:0 1px rgba(148,156,132,.1); }
+
+/* --------------------------------------------------------------- screen */
+
+.terminal-screen {
+  position: absolute;
+  z-index: 1;
+  left: var(--screen-x);
+  top: var(--screen-y);
+  width: var(--screen-w);
+  height: var(--screen-h);
+  border-radius: var(--screen-round);
+  overflow: hidden;
+  box-shadow:
+    0 0 0 2px rgba(6, 12, 4, 0.88),
+    0 0 18px rgba(126, 255, 86, 0.13),
+    inset 0 0 24px rgba(0, 0, 0, 0.82);
+}
+
+/* Opaque glass fill - covers whatever is printed on the art's screen. */
+.screen-fill {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(47, 80, 29, 0.3), transparent 62%),
+    linear-gradient(180deg, var(--screen-bg-2) 0%, var(--screen-bg) 100%);
+  box-shadow:
+    inset 0 0 26px rgba(71, 140, 40, 0.18),
+    inset 0 0 0 1px rgba(153, 255, 112, 0.06);
+}
+
+.screen-scanlines,
+.screen-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.screen-scanlines {
+  background: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0) 0 1px, rgba(0, 0, 0, 0.28) 1px 2px);
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  background-position: 0 0;
+  animation: scanline-drift 7s linear infinite;
+}
+
+.screen-glow {
+  background:
+    radial-gradient(circle at 50% 38%, rgba(126, 255, 86, 0.15), transparent 54%),
+    radial-gradient(ellipse at 50% 110%, rgba(0, 0, 0, 0.45), transparent 48%);
+  animation: crt-breathe 2.8s steps(2, end) infinite;
+}
+
+.screen-inner {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  padding: 8px 11px 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------------------------------------------------------------- meta row */
+
+.terminal-meta-row {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 4px;
+  font-size: 8px;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: var(--screen-muted);
+  border-bottom: 1px solid rgba(137, 255, 79, 0.26);
+}
+
+.meta-blip {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 5px;
+  background: var(--screen-accent-2);
+  box-shadow: 0 0 5px rgba(126, 255, 86, 0.5);
+  animation: status-blink 1.15s steps(2, end) infinite;
+}
+
+/* ----------------------------------------------------------- task header */
+
+.task-block {
+  flex: 0 1 auto;
+  min-height: 0;
+  text-align: center;
+  margin-top: 7px;
+}
+
+/* Capped at two lines so an over-long label truncates instead of
+   squeezing the meter and telemetry rows. */
+.task-label {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 20px;
+  line-height: 1.06;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  text-shadow: 0 0 9px rgba(177, 255, 96, 0.3);
+  word-break: break-word;
+}
+
+.task-stage {
+  margin-top: 2px;
+  min-height: 13px;
+  font-size: 11px;
+  line-height: 1.2;
+  letter-spacing: 0.3px;
+  color: var(--screen-muted);
+}
+
+.task-divider {
+  position: relative;
+  height: 1px;
+  margin: 8px 2px 0;
+  background: linear-gradient(90deg, transparent, rgba(137, 255, 79, 0.5) 10%, rgba(137, 255, 79, 0.5) 90%, transparent);
+}
+
+.task-chevron {
+  position: absolute;
+  left: 50%;
+  top: 1px;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--screen-accent-2);
+  opacity: 0.9;
+}
+
+/* ----------------------------------------------------------------- meter */
+
+.main-progress-row {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: 1fr 58px 76px;
+  margin-top: 9px;
+  border: 1px solid rgba(137, 255, 79, 0.34);
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(2, 8, 2, 0.62);
+}
+
+.progress-tube {
+  position: relative;
+  height: 28px;
+  margin: 4px 5px;
+  border: 1px solid rgba(137, 255, 79, 0.16);
+  background: rgba(4, 12, 3, 0.72);
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  inset: 2px auto 2px 2px;
+  width: 0%;
+  max-width: calc(100% - 4px);
+  background: linear-gradient(180deg, rgba(183, 255, 105, 0.96), rgba(112, 234, 59, 0.93));
+  box-shadow: 0 0 10px rgba(126, 255, 86, 0.3);
+  transition: width 80ms linear;
+}
+
+.progress-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 24px;
+  background: linear-gradient(90deg, transparent, rgba(238, 255, 219, 0.38), transparent);
+  transform: translateX(-28px);
+  animation: meter-sweep 1.55s linear infinite;
+}
+
+/* Notches the fill into discrete terminal-style blocks. */
+.tube-segments {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 6px,
+    rgba(4, 12, 3, 0.96) 6px 8.5px
+  );
+}
+
+.readout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgba(137, 255, 79, 0.28);
+  background: rgba(2, 8, 2, 0.7);
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-shadow: 0 0 8px rgba(177, 255, 96, 0.24);
+}
+
+.readout--percent { font-size: 19px; }
+.readout--timer { font-size: 18px; }
+
+.unit--percent {
+  margin-left: 2px;
+  font-size: 0.58em;
+  color: var(--screen-muted);
+}
+
+/* ------------------------------------------------------------ telemetry */
+
+.telemetry-row {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: 102px 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.telemetry-title,
+.phase-value,
+.sys-ok {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.telemetry-title {
+  font-size: 8px;
+  margin-bottom: 3px;
+}
+
+.signal-box {
+  position: relative;
+  padding: 3px 4px 4px;
+  border: 1px solid rgba(137, 255, 79, 0.22);
+  background:
+    repeating-linear-gradient(90deg, rgba(137, 255, 79, 0.07) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(180deg, rgba(137, 255, 79, 0.07) 0 1px, transparent 1px 8px),
+    rgba(2, 8, 2, 0.5);
+}
+
+.signal-wave {
+  width: 100%;
+  height: 26px;
+  display: block;
+}
+
+.signal-wave polyline {
+  fill: none;
+  stroke: var(--screen-accent);
+  stroke-width: 2;
+  opacity: 0.92;
+  stroke-dasharray: 235 45;
+  animation: signal-sweep 2.2s linear infinite;
+}
+
+.signal-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 11px;
+  margin-top: 3px;
+}
+
+.bar {
+  width: 6px;
+  background: var(--screen-accent);
+  box-shadow: 0 0 4px rgba(126, 255, 86, 0.2);
+}
+
+.bar:nth-child(1) { height: 3px; }
+.bar:nth-child(2) { height: 5px; }
+.bar:nth-child(3) { height: 7px; }
+.bar:nth-child(4) { height: 9px; }
+.bar:nth-child(5) { height: 11px; }
+.bar--dim { opacity: 0.26; }
+
+.sys-ok {
+  margin-top: 4px;
+  font-size: 8px;
+  color: var(--screen-muted);
+}
+
+.telemetry--right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.phase-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 9px;
+}
+
+.phase-value {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.stage-nodes {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(9px, 1fr);
+  gap: 4px;
+}
+
+.stage-node {
+  position: relative;
+  height: 12px;
+  border: 1px solid rgba(137, 255, 79, 0.24);
+  background: rgba(137, 255, 79, 0.07);
+  overflow: hidden;
+}
+
+.stage-node::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: rgba(137, 255, 79, 0.07);
+}
+
+.stage-node.is-finished::before,
+.stage-node.is-current::before {
+  background: linear-gradient(180deg, rgba(183, 255, 105, 0.95), rgba(107, 219, 63, 0.85));
+  box-shadow: 0 0 6px rgba(126, 255, 86, 0.3);
+}
+
+.stage-node.is-current::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border: 1px solid rgba(236, 255, 208, 0.5);
+}
+
+.micro-dots {
+  margin-top: 6px;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, rgba(137, 255, 79, 0.5) 0 2px, transparent 2px 7px);
+  opacity: 0.7;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 7px;
+  margin-top: 6px;
+}
+
+.cancel-hint {
+  flex: 1;
+  text-align: center;
+  padding: 3px 5px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--screen-accent);
+  border-top: 1px solid rgba(137, 255, 79, 0.22);
+  border-bottom: 1px solid rgba(137, 255, 79, 0.22);
+  background: linear-gradient(180deg, rgba(8, 18, 7, 0.5), rgba(2, 8, 2, 0.3));
+}
+
+.cancel-hint.is-locked {
+  color: var(--screen-muted);
+  opacity: 0.85;
+}
+
+.mini-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.mini-button {
+  width: 40px;
+  padding: 2px 4px 3px;
+  border: 1px solid rgba(137, 255, 79, 0.22);
+  background: rgba(2, 8, 2, 0.55);
+  text-align: center;
+}
+
+.mini-button__label {
+  display: block;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  margin-bottom: 2px;
+}
+
+.mini-button__lamp {
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(180deg, rgba(183, 255, 105, 0.95), rgba(107, 219, 63, 0.85));
+  box-shadow: 0 0 5px rgba(126, 255, 86, 0.25);
+}
+
+.screen-ruler {
+  flex: 0 0 auto;
+  margin-top: auto;
+  height: 5px;
+  background: repeating-linear-gradient(90deg, rgba(137, 255, 79, 0.34) 0 1px, transparent 1px 9px);
+  opacity: 0.55;
+}
+
+@keyframes status-blink {
+  0%, 62% { opacity: 1; }
+  63%, 100% { opacity: 0.32; }
+}
+
+@keyframes scanline-drift {
+  from { background-position: 0 0; }
+  to { background-position: 0 28px; }
+}
+
+@keyframes crt-breathe {
+  0%, 100% { opacity: 0.86; }
+  48% { opacity: 1; }
+  52% { opacity: 0.93; }
+}
+
+@keyframes meter-sweep {
+  from { transform: translateX(-28px); }
+  to { transform: translateX(390px); }
+}
+
+@keyframes signal-sweep {
+  to { stroke-dashoffset: -280; }
+}
+
+/* -------------------------------------------------------------- responsive */
+
+@media (max-width: 720px) {
+  .terminal-device { width: min(94vw, 560px); height: min(59.1vw, 352px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal-wrapper,
+  .progress-fill,
+  .progress-fill::after,
+  .screen-scanlines,
+  .screen-glow,
+  .meta-blip,
+  .signal-wave polyline {
+    transition: none !important;
+    animation: none !important;
+  }
 }
