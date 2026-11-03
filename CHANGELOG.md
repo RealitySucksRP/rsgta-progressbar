@@ -11,7 +11,7 @@
 - Added `/rsprogressdiag` with environment, NUI, ox_lib and duplicate-provider diagnostics.
 - Rewrote README and installation notes for Qbox, QBCore, ESX, ox-style, standalone, Legacy and Enhanced owners.
 - Preserved the working Qbox behavior, QBCore callback safety, ESX compatibility, server-side prop validation and UI design.
-- No external `rs_bridge`, inventory or framework dependency was added.
+- No external inventory or framework dependency was added.
 
 ## v4.2.0 — Universal Qbox/QBCore hardening
 
@@ -29,7 +29,7 @@
 - Rebranded the product and NUI as RS Field Terminal Progressbar.
 - Removed the previous franchise-adjacent branding and old branded frame artwork.
 - Rebuilt the rugged field-terminal housing in local HTML/CSS.
-- Removed the hard dependency on rs_bridge; the resource is framework-agnostic.
+- Removed the legacy external adapter dependency; the resource is framework-agnostic.
 - Added explicit QBCore, Qbox, ESX, Ox Core/ox_inventory, and standalone install instructions.
 - Added `provide 'esx_progressbar'` for ESX replacement compatibility.
 - Preserved `provide 'progressbar'` and standard QBCore progress exports/events.
