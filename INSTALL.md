@@ -44,7 +44,7 @@ ensure progressbar
 ensure progressbar
 ```
 
-The progressbar has no framework, inventory or rs_bridge dependency. It only needs to be running before a resource calls it.
+The progressbar has no framework or inventory dependency. It only needs to be running before a resource calls it.
 
 ## Qbox and ox_lib
 
