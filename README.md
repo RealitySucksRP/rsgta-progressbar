@@ -25,7 +25,7 @@ Give everyday actions a modern field-terminal display. This framework-independen
 
 **Free • Full source • GPL-3.0-only • Legacy and Enhanced ready**
 
-RSGTA Modern Progressbar is RealitySucksRP's universal field-terminal progress system for FiveM. The engine is **framework-agnostic**: one `progressbar` resource can serve Qbox, QBCore, ESX, ox-style callers, custom frameworks and standalone resources without requiring `rs_bridge` or an inventory dependency.
+RSGTA Modern Progressbar is RealitySucksRP's universal field-terminal progress system for FiveM. The engine is **framework-agnostic**: one `progressbar` resource can serve Qbox, QBCore, ESX, ox-style callers, custom frameworks and standalone resources without requiring an external adapter or inventory dependency.
 
 > **Important:** keep the extracted folder named exactly `progressbar`. Current QBCore checks the `progressbar` resource and routes its wrapper through `exports['progressbar']`; Qbox keeps QB-compatible callers working through the same resource name. ESX uses the separate `esx_progressbar` API name, which this resource satisfies through `provide 'esx_progressbar'` plus the expected exports.
 
@@ -200,7 +200,7 @@ Turn dev mode back off afterward.
 - **Folder name matters:** use `progressbar`, not `progressbar(1)` or `rsgta-progressbar` on the server.
 - **One provider only:** do not leave the stock QBCore progressbar, a separate ESX progressbar and this resource running together.
 - **No inventory dependency:** ox_inventory, qb-inventory and other inventories do not need modification for this resource.
-- **No external RS Bridge dependency:** this progressbar is self-contained.
+- **Self-contained:** this progressbar does not require an external framework adapter.
 - **Qbox note:** QB-compatible callers route here; hardcoded `lib.progressBar()` is still an ox_lib call unless you intentionally install the optional adapter.
 - **Full restart recommended:** especially after replacing another provider with the same resource/export name.
 - **Live smoke test:** test complete, cancel, non-cancellable, animation, prop and framework-wrapper actions before opening the server to players.
