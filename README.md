@@ -1,227 +1,58 @@
-# RSGTA Modern Progressbar
+# RS Progressbar Studio
 
-<a href="https://reality-sucks-rp-webstore.tebex.io/package/7667590"><img src="docs/screenshots/preview-1.webp" width="900" alt="RSGTA Modern Progressbar"></a>
+<a href="https://reality-sucks-rp-webstore.tebex.io/package/7667590"><img src="https://dunb17ur4ymx4.cloudfront.net/packages/images/77c4b63355f6f0a2fea03ca8c9504cef74cf9b3c.png" width="100%" alt="RS Progressbar Studio – 10 immersive frames"></a>
 
-Give everyday actions a modern field-terminal display. This framework-independent progress provider supports single and multi-stage actions, animations, scenarios, attached props and cancellation. Use its QBCore, Qbox, ESX or direct-export paths to fit your existing resources.
+**Free | Full source | FiveM Legacy and Enhanced | Qbox, QBCore, ESX and Standalone**
 
-[Download the original ZIP](https://github.com/RealitySucksRP/rsgta-progressbar/releases/latest/download/progressbar.zip) | [Free on Tebex](https://reality-sucks-rp-webstore.tebex.io/package/7667590) | [Watch preview](https://www.youtube.com/watch?v=fnyxDDbBaKQ) | [Website](https://realitysucksrp.github.io/) | [Discord](https://discord.gg/e9V3rPHySx) | [YouTube](https://www.youtube.com/@RealitySucksRP) | [All free scripts](https://reality-sucks-rp-webstore.tebex.io/category/free-scripts)
+A customizable FiveM progress interface with ten device-inspired frames, animated progress effects, a live customization studio and action-specific imagery. Built for roleplay, survival and standalone servers.
 
-**Install folder:** `progressbar`. Download the original ZIP to retain the package folder layout. Source, configuration, licenses and included assets are provided below.
+[Free on Tebex](https://reality-sucks-rp-webstore.tebex.io/package/7667590) | [Website](https://realitysucksrp.github.io/) | [Discord](https://discord.gg/e9V3rPHySx) | [YouTube](https://www.youtube.com/@RealitySucksRP) | [All free scripts](https://reality-sucks-rp-webstore.tebex.io/category/free-scripts)
 
-<details>
-<summary>More screenshots</summary>
+> **Version availability:** the screenshots and feature overview below depict the current Tebex Studio edition (4.4.17 supplied package). The GitHub source currently remains at 4.3.0. Get the Studio edition from the Tebex listing until the GitHub source and release ZIP are synchronized.
 
-<img src="docs/screenshots/preview-2.webp" width="480" alt="RSGTA Modern Progressbar screenshot 2">
+## Frame Studio
 
-</details>
+- Ten selectable frames with eight accent choices and five manual progress styles plus automatic selection.
+- Live preview, playback, saved cosmetic preferences and adjustable scaling.
+- Full, Low and Off visual effects settings.
+- Action-specific imagery for vehicle and item interactions, with percentage and remaining-time indicators.
 
-## Package documentation
+## Screenshots
 
-<p align="center">
-  <img src="docs/progressbar-hero.png" alt="RSGTA Modern Progressbar" width="100%">
-</p>
+<img src="https://dunb17ur4ymx4.cloudfront.net/packages/images/e3ee449660250a55f3ad8589ed9f654d0a5a4079.png" width="100%" alt="Pip-Boi 420 Frame Studio">
 
-# RSGTA Modern Progressbar v4.3.0
+<img src="https://dunb17ur4ymx4.cloudfront.net/packages/images/707a9521f283eecd37ce09bc9047006114245e17.png" width="100%" alt="Tactical Grid live preview">
 
-**Free • Full source • GPL-3.0-only • Legacy and Enhanced ready**
+<img src="https://dunb17ur4ymx4.cloudfront.net/packages/images/a99743657e20a4dca5600d73f5d727bcdfa23e76.png" width="100%" alt="Street Glass customization">
 
-RSGTA Modern Progressbar is RealitySucksRP's universal field-terminal progress system for FiveM. The engine is **framework-agnostic**: one `progressbar` resource can serve Qbox, QBCore, ESX, ox-style callers, custom frameworks and standalone resources without requiring an external adapter or inventory dependency.
+<img src="https://dunb17ur4ymx4.cloudfront.net/packages/images/3a6870b30e3f25f13c83eeafa3d537c2e8e4e442.png" width="100%" alt="Medical interaction">
 
-> **Important:** keep the extracted folder named exactly `progressbar`. Current QBCore checks the `progressbar` resource and routes its wrapper through `exports['progressbar']`; Qbox keeps QB-compatible callers working through the same resource name. ESX uses the separate `esx_progressbar` API name, which this resource satisfies through `provide 'esx_progressbar'` plus the expected exports.
+<img src="https://dunb17ur4ymx4.cloudfront.net/packages/images/2773c2633da8bdf02575c9981c0c92d13fe7574e.png" width="100%" alt="Violet Syndicate">
 
-## Compatibility
+<img src="https://dunb17ur4ymx4.cloudfront.net/packages/images/08fc0bdb8fcbdba2c38ca31f9ff38320b2ba5b9a.png" width="100%" alt="Neon Runner">
 
-| Environment | Supported path |
-| --- | --- |
-| Qbox / `qbx_core` | QB-compatible `exports['progressbar']` callers and direct exports |
-| QBCore / `qb-core` | Current `QBCore.Functions.Progressbar` → `exports['progressbar']:Progress(...)` |
-| ESX / `es_extended` | `ESX.Progressbar` / `exports['esx_progressbar']:Progressbar(...)` |
-| Ox-style resources | Direct `progressBar`, `progressCircle`, `progressActive`, `cancelProgress` exports |
-| Standalone / custom | Direct `exports['progressbar']` API |
-| Legacy / Enhanced | Same resource; no separate build required |
+## Progress engine
 
-Qbox's QB compatibility layer lets QB-style resources continue using the familiar QBCore path. Resources hardcoded to `lib.progressBar()` still use ox_lib's own progress UI unless the **optional** ox_lib bridge in `tools/ox_lib` is intentionally installed.
+- Single-stage and multi-stage actions, animations and scenarios.
+- Up to five validated attached props per action.
+- Configurable cancellation and control restrictions.
+- Lua-authoritative completion handling, watchdog recovery and resource-stop cleanup.
+- No required framework, inventory or database dependency.
 
-## Why one build works across frameworks
+## Installation and compatibility
 
-The progressbar does not own jobs, money, inventory or framework state. It only owns progress presentation, animation/prop lifecycle, control disabling, cancellation and completion callbacks. That keeps framework-specific business logic in the calling resource and makes this resource portable.
-
-## Features
-
-- Modern field-terminal NUI
-- Single-stage and multi-stage actions
-- Lua-authoritative completion safety
-- QBCore/Qbox compatible callbacks
-- ESX compatibility alias
-- Third-party `qb-progressbar` compatibility alias
-- Ox-style direct exports
-- Standalone direct API
-- Animations, scenarios and sequential animation stages
-- Up to five validated network props per action
-- Player cancellation with configurable key mapping
-- Control disabling
-- Dead/ragdoll/swimming/cuffed/falling handling for ox-style semantics
-- Completion ledger and watchdog recovery
-- Resource-stop cleanup
-- Server-side prop ownership/model validation
-- Four built-in terminal themes
-- `center-bottom`, `center`, and `center-top` placement
-- Built-in `/rsprogressdiag` installation diagnostic
-
-## Installation
-
-1. Stop/remove the progressbar resource you are replacing.
-2. Extract this package so the folder is exactly `progressbar`.
-3. Ensure it **before resources that call its exports**.
-4. Do not run two progress providers for the same API at the same time.
-5. Fully restart the server after replacing an existing provider.
-6. Run `/rsprogressdiag` in client F8 and confirm the detected environment.
-
-### Qbox
-
-```cfg
-ensure ox_lib
-ensure qbx_core
-ensure progressbar
-# resources that use progress after this
-```
-
-No Qbox edits are required for QB-compatible callers. If a resource calls `lib.progressBar()` directly, it continues to use ox_lib unless you deliberately install the optional adapter under `tools/ox_lib`.
-
-### QBCore
-
-```cfg
-ensure qb-core
-ensure progressbar
-# resources that use QBCore.Functions.Progressbar after this
-```
-
-No edits to `qb-core` are required. Current QBCore's wrapper calls the `progressbar` export this resource implements.
-
-### ESX
-
-```cfg
-ensure es_extended
-ensure progressbar
-# ESX resources after this
-```
-
-Do not also start a separate `esx_progressbar`. This resource declares `provide 'esx_progressbar'` and exposes the expected `Progressbar` and `CancelProgressbar` exports.
-
-### Standalone / custom framework
+Keep the resource folder named `progressbar`. Run only one provider for the same progress API. Start your framework (if used) before the progressbar and start its consumers afterward.
 
 ```cfg
 ensure progressbar
 ```
 
-Then call the direct exports shown below.
+QBCore and Qbox support QB-compatible progress calls; ESX supports the ESX progress interface. Direct exports support standalone and custom integrations. Native ox_lib calls require the optional adapter if you intend to redirect them.
 
-## QBCore-compatible example
+Run `rsprogressdiag` from client F8 to check the installed version and provider state.
 
-```lua
-exports['progressbar']:Progress({
-    name = 'repair_vehicle',
-    label = 'Repairing Vehicle',
-    duration = 5000,
-    useWhileDead = false,
-    canCancel = true,
-    controlDisables = {
-        disableMovement = true,
-        disableCombat = true,
-    },
-}, function(cancelled)
-    if cancelled then return end
-    print('Repair complete')
-end)
-```
-
-## ESX example
-
-```lua
-ESX.Progressbar('Repairing Vehicle', 5000, {
-    FreezePlayer = true,
-    onFinish = function()
-        print('Repair complete')
-    end,
-    onCancel = function()
-        print('Repair cancelled')
-    end,
-})
-```
-
-## Direct / custom-framework example
-
-```lua
-local started = exports['progressbar']:Start({
-    label = 'Searching Vehicle',
-    duration = 5000,
-    canCancel = true,
-}, function(cancelled)
-    print('cancelled:', cancelled)
-end)
-```
-
-## Multi-stage example
-
-```lua
-exports['progressbar']:Progress({
-    label = 'Inspecting Vehicle',
-    canCancel = true,
-    stages = {
-        { message = 'Checking exterior', duration = 1500 },
-        { message = 'Scanning electrical system', duration = 2500 },
-        { message = 'Finishing inspection', duration = 1500 },
-    },
-}, function(cancelled)
-    print('cancelled:', cancelled)
-end)
-```
-
-## Diagnostics
-
-Run in client F8:
-
-```text
-rsprogressdiag
-```
-
-The diagnostic reports the package version, resource folder, detected Qbox/QBCore/ESX/Standalone environment, ox_lib state, NUI readiness, active state and obvious duplicate progress providers.
-
-For QBCore/Qbox wrapper testing, temporarily set `Config.devMode = true` and run:
-
-```text
-rsfieldqbtest
-```
-
-Turn dev mode back off afterward.
-
-## Server-owner notes
-
-- **Folder name matters:** use `progressbar`, not `progressbar(1)` or `rsgta-progressbar` on the server.
-- **One provider only:** do not leave the stock QBCore progressbar, a separate ESX progressbar and this resource running together.
-- **No inventory dependency:** ox_inventory, qb-inventory and other inventories do not need modification for this resource.
-- **Self-contained:** this progressbar does not require an external framework adapter.
-- **Qbox note:** QB-compatible callers route here; hardcoded `lib.progressBar()` is still an ox_lib call unless you intentionally install the optional adapter.
-- **Full restart recommended:** especially after replacing another provider with the same resource/export name.
-- **Live smoke test:** test complete, cancel, non-cancellable, animation, prop and framework-wrapper actions before opening the server to players.
-- **Enhanced artifact note:** current FiveM Enhanced builds include the August 2026 fix for `provide`/`GetResourceState`. If ESX reports `esx_progressbar` as missing despite this resource being installed, update the server artifact first.
-
-See [`INSTALL.md`](INSTALL.md) for a longer installation checklist and [`DEVELOPER-API.md`](DEVELOPER-API.md) for the complete API.
+[Installation guide](INSTALL.md) | [Developer API](DEVELOPER-API.md) | [Existing GitHub release (older)](https://github.com/RealitySucksRP/rsgta-progressbar/releases)
 
 ## License
 
-This is a **GPL-3.0-only** full-source release because it is derived in part from `swkeep/keep-progressbar`. See `LICENSE.md`, `COPYING`, and `THIRD_PARTY_NOTICES.md`.
-
-The GPL license allows use, modification and redistribution under its terms. This package is free and is not distributed under RealitySucksRP's restrictive paid-resource license.
-
-## Upstream/API references
-
-- QBCore progressbar: https://github.com/qbcore-fivem/progressbar
-- QBCore client wrapper: https://github.com/qbcore-framework/qb-core/blob/main/client/functions.lua
-- Qbox compatibility documentation: https://docs.qbox.re/faq
-- ESX progressbar integration: https://github.com/esx-framework/esx_core
-- Cfx resource manifests: https://docs.fivem.net/docs/scripting-reference/resource-manifest/
-- Cfx NUI callbacks: https://docs.fivem.net/docs/scripting-manual/nui-development/nui-callbacks/
-
-
-[Earlier repository documentation and all existing links](PREVIOUS_README.md)
+GPL-3.0-only, derived in part from swkeep/keep-progressbar. See [license](LICENSE.md), [COPYING](COPYING) and [third-party notices](THIRD_PARTY_NOTICES.md). 
