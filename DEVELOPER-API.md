@@ -1,4 +1,4 @@
-# RSGTA Modern Progressbar — Developer API
+# RS Progressbar Studio — Developer API
 
 The recommended resource folder name is `progressbar`.
 
@@ -94,3 +94,10 @@ Do not put framework money, inventory, job, reward, or mission authority inside 
 ## Installation diagnostic
 
 Server owners can run `rsprogressdiag` in client F8 to verify the detected environment and obvious duplicate progress providers.
+
+
+## Built-in smart presets
+
+Version 4.3.5 adds built-in fallback candidates for common item and tool names so server owners do not have to alias every basic consumable manually.
+Examples include `water`, `bandage`, `firstaid`, `medkit`, `cigarette`, `joint`, `beer`, `whiskey`, `vodka`, `lockpick`, `advancedlockpick`, and `hotwirekit`.
+Server-owner aliases in `Config.assetImages.aliases` still override these defaults.

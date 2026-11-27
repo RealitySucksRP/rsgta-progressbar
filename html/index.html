@@ -1,96 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RS Field Terminal Progress UI</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="themes.css" />
-</head>
-<body>
-  <div id="app" class="nui-hidden">
-    <div id="terminal-wrapper" class="terminal-wrapper" data-theme="default" data-position="center-bottom" aria-hidden="true">
-      <div class="terminal-device">
-        <div class="case-rivet rivet-a"></div><div class="case-rivet rivet-b"></div>
-        <div class="case-rivet rivet-c"></div><div class="case-rivet rivet-d"></div>
-        <div class="case-marking">RS FIELD TERMINAL</div>
-        <div class="case-submark">FIELD SERIES // FT-04</div>
-        <div class="case-controls" aria-hidden="true">
-          <div class="control-slot"></div>
-          <div class="control-knob"></div>
-          <div class="control-led"></div>
-          <div class="control-grille"><i></i><i></i><i></i><i></i><i></i></div>
-        </div>
-
-        <div class="terminal-screen">
-          <div class="screen-fill"></div>
-          <div class="screen-glow"></div>
-          <div class="screen-scanlines"></div>
-
-          <div class="screen-inner">
-            <div class="terminal-meta-row">
-              <span class="meta-left"><i class="meta-blip"></i>RS FIELD TERMINAL</span>
-              <span class="meta-right" id="statusText">STATUS: ACTIVE</span>
-            </div>
-
-            <div class="task-block">
-              <div id="taskLabel" class="task-label">WORKING...</div>
-              <div id="taskStage" class="task-stage">Initializing process</div>
-              <div class="task-divider"><span class="task-chevron"></span></div>
-            </div>
-
-            <div class="main-progress-row">
-              <div class="progress-tube">
-                <div id="progressFill" class="progress-fill"></div>
-                <div class="tube-segments"></div>
-              </div>
-              <div class="readout readout--percent">
-                <span id="percentValue">0</span><span class="unit unit--percent">%</span>
-              </div>
-              <div class="readout readout--timer">
-                <span id="timeValue">00:00.0</span>
-              </div>
-            </div>
-
-            <div class="telemetry-row">
-              <div class="telemetry telemetry--left">
-                <div class="telemetry-title">SIG</div>
-                <div class="signal-box">
-                  <svg class="signal-wave" viewBox="0 0 180 72" preserveAspectRatio="none" aria-hidden="true">
-                    <polyline points="0,40 14,40 22,34 30,40 44,40 52,12 60,60 70,40 88,40 96,44 104,36 118,40 128,14 136,58 146,40 180,40"></polyline>
-                  </svg>
-                  <div class="signal-bars" aria-hidden="true">
-                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-                    <span class="bar bar--dim"></span><span class="bar bar--dim"></span>
-                  </div>
-                </div>
-                <div class="sys-ok">SYS: OK</div>
-              </div>
-
-              <div class="telemetry telemetry--right">
-                <div class="phase-row">
-                  <div id="phaseValue" class="phase-value">PHASE 01 / 01</div>
-                  <div id="stageNodes" class="stage-nodes"></div>
-                </div>
-                <div class="micro-dots"></div>
-                <div class="footer-row">
-                  <div id="cancelHint" class="cancel-hint">PRESS X TO CANCEL</div>
-                  <div class="mini-buttons" aria-hidden="true">
-                    <div class="mini-button"><span class="mini-button__label">PWR</span><span class="mini-button__lamp"></span></div>
-                    <div class="mini-button"><span class="mini-button__label">DATA</span><span class="mini-button__lamp"></span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="screen-ruler" aria-hidden="true"></div>
-          </div>
-        </div>
-      </div>
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RS Progressbar Studio | Live Progress</title><link rel="stylesheet" href="style.css?v=4.4.10"><link rel="stylesheet" href="themes.css"><link rel="stylesheet" href="frames.css?v=4.4.15"><link rel="stylesheet" href="customizer.css?v=4.4.17"><link rel="stylesheet" href="effects.css?v=4.4.7"></head>
+<body><div id="app" class="nui-hidden"><div id="terminal-wrapper" class="terminal-wrapper" data-theme="theme-2" data-frame="streetglass" data-bar="segmented" data-position="center-bottom" aria-hidden="true">
+<div class="terminal-device" role="status" aria-label="Action progress">
+<div class="frame-chassis" aria-hidden="true"><span class="chassis-title">RS // LIVE ACTION</span><span class="chassis-sub">INTERACTIVE PROGRESS // SYSTEM ONLINE</span><i class="chassis-led"></i><i class="chassis-detail chassis-detail-a"></i><i class="chassis-detail chassis-detail-b"></i></div>
+<!-- Independent live HTML content is positioned exactly inside the generated metal chassis. -->
+<div class="terminal-screen"><div class="screen-fill"></div><div class="screen-inner">
+  <div class="terminal-meta-row"><span class="meta-left"><i class="meta-blip"></i><span id="terminalBrand">RS LIVE PROGRESS</span> <span class="meta-divider">//</span> FIELD INTERFACE</span><span id="statusText" class="meta-right">STATUS: STANDBY</span></div>
+  <div class="module-tabs" aria-hidden="true"><span class="tab">✦ STATUS</span><span class="tab is-active">⚒ ACTIONS</span><span class="tab">▣ ITEMS</span><span class="tab">◈ DATA</span><span class="tab">◉ SIGNAL</span></div>
+  <div class="workspace"><aside class="screen-side" aria-label="Task categories">
+    <div class="side-category is-active" data-cat="general"><span>≡</span> PROGRESS BAR</div>
+    <div class="side-category" data-cat="consume"><span>⌁</span> CONSUME ITEM</div>
+    <div class="side-category" data-cat="craft"><span>⚒</span> CRAFT ITEM</div>
+    <div class="side-category" data-cat="medical"><span>✚</span> HEAL / MEDICAL</div>
+    <div class="side-category" data-cat="vehicle"><span>⚙</span> VEHICLE REPAIR</div>
+    <div class="side-category" data-cat="search"><span>⌕</span> SEARCH / LOOT</div>
+    <div class="side-category" data-cat="carry"><span>▣</span> CARRY / LIFT</div>
+    <div class="side-category" data-cat="gather"><span>❖</span> HARVEST / GATHER</div>
+    <div class="side-category" data-cat="misc"><span>···</span> MISC ACTIONS</div>
+  </aside><section class="screen-content">
+    <div class="task-block"><div id="taskLabel" class="task-label">SEARCHING VEHICLE</div><div id="taskStage" class="task-stage">Bypassing lock cylinder</div>
+      <div class="scanner-field" aria-hidden="true"><div class="scanner-grid"></div><div id="assetPhotoPanel" class="vehicle-photo-panel" hidden><img id="assetPhoto" class="vehicle-photo" alt="" draggable="false"><span class="vehicle-photo-overlay" aria-hidden="true"></span><span id="assetPhotoFallback" class="vehicle-photo-fallback">IMAGE NOT AVAILABLE</span><span id="assetPhotoName" class="vehicle-photo-name"></span></div><div class="scanner-radar"></div><span class="scanner-caption">PROCESSING SIGNAL ...</span></div>
     </div>
+    <div class="main-progress-row" aria-label="Task progress"><div class="progress-tube" id="progressTube"><div id="progressFill" class="progress-fill"></div><div class="tube-segments"></div></div><div class="readout readout--percent"><span id="percentValue">0</span><span class="unit unit--percent">%</span></div><div class="readout readout--timer"><span id="timeValue">00:00.0</span></div></div>
+    <div class="telemetry-row"><div class="telemetry telemetry--left"><div class="telemetry-title">SIG <span id="signalLabel">LINK</span></div><div class="signal-box"><svg class="signal-wave" viewBox="0 0 180 72" preserveAspectRatio="none"><polyline points="0,40 14,40 22,34 30,40 44,40 52,12 60,60 70,40 88,40 96,44 104,36 118,40 128,14 136,58 146,40 180,40"/></svg><div class="signal-bars"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar bar--dim"></span></div></div><div class="sys-ok">SYS: <span id="systemState">OK</span></div></div>
+    <div class="telemetry telemetry--right"><div class="phase-row"><div id="phaseValue" class="phase-value">PHASE 01 / 01</div><div id="stageNodes" class="stage-nodes"></div></div><div class="micro-dots"></div><div id="cancelHint" class="cancel-hint">PRESS X TO CANCEL</div></div></div>
+    <div class="footer-row"><span class="footer-status">RS // PERSONAL FIELD INTERFACE</span><div class="mini-buttons"><span>PWR <b></b></span><span>DATA <b></b></span></div></div>
+  </section></div>
+</div><div class="screen-scanlines"></div><div class="screen-glow"></div></div>
+<div class="arcade-rim" aria-hidden="true"></div>
+<!-- Bottom secondary readout is also HTML, never a frozen image. -->
+<div class="dock-backing" aria-hidden="true"></div>
+<div class="terminal-dock"><div class="dock-label" id="dockLabel">SEARCHING VEHICLE</div><div class="dock-row"><div class="dock-track"><div id="dockFill" class="dock-fill"></div><div class="dock-bars"></div></div><div id="dockPercent" class="dock-readout">0%</div><div id="dockTimer" class="dock-readout">00:00.0</div></div></div>
+<img class="terminal-shell" src="assets/pipboi-420-shell.webp" alt="" draggable="false" aria-hidden="true">
+</div></div></div>
+<div id="styleEditor" class="style-editor" hidden role="dialog" aria-modal="true" aria-labelledby="styleEditorTitle">
+  <div class="style-panel">
+    <div class="style-top"><div class="style-title-copy"><div class="style-kicker">REALITYSUCKSRP · PROGRESS SYSTEM</div><h1 id="styleEditorTitle">FRAME STUDIO</h1><p>Choose a HUD chassis, a color theme, and a live progress animation.</p></div><div class="style-header-brand"><img class="style-rs-logo" src="assets/rs-logo.png" alt="RS" width="400" height="232" draggable="false"><button type="button" class="style-close" id="styleEditorClose" aria-label="Close frame studio">×</button></div></div>
+    <div class="style-body">
+      <section class="style-choices" aria-labelledby="frameSelectTitle">
+        <h2 id="frameSelectTitle">01 <span>FRAME DESIGNS</span></h2>
+        <div class="frame-categories" role="group" aria-label="Frame categories"><button type="button" data-frame-category="all">ALL</button><button type="button" data-frame-category="original">CLASSIC</button><button type="button" data-frame-category="racing">RACING</button><button type="button" data-frame-category="gangs">GANGS</button></div><div class="style-frame-list" id="styleFrames">
+          <button type="button" class="style-frame-choice" data-style-frame="streetglass" data-frame-group="original"><span class="frame-thumbnail frame-thumbnail--streetglass"><i></i></span><span class="frame-choice-copy"><strong>STREET GLASS</strong><small>Urban tactical alloy</small></span></button>
+          <button type="button" class="style-frame-choice" data-style-frame="neonrunner" data-frame-group="racing"><span class="frame-thumbnail frame-thumbnail--neonrunner"><i></i></span><span class="frame-choice-copy"><strong>NEON RUNNER</strong><small>Neon racing hardware</small></span></button>
+          <button type="button" class="style-frame-choice" data-style-frame="carbonracer" data-frame-group="racing"><span class="frame-thumbnail frame-thumbnail--carbonracer"><i></i></span><span class="frame-choice-copy"><strong>CARBON RACER</strong><small>Forged-carbon cockpit</small></span></button>
+          <button type="button" class="style-frame-choice" data-style-frame="tactical" data-frame-group="original"><span class="frame-thumbnail frame-thumbnail--tactical"><i></i></span><span class="frame-choice-copy"><strong>TACTICAL GRID</strong><small>Rugged field terminal</small></span></button>
+          <button type="button" class="style-frame-choice" data-style-frame="arcade" data-frame-group="original"><span class="frame-thumbnail frame-thumbnail--arcade"><i></i></span><span class="frame-choice-copy"><strong>ARCADE CHROME</strong><small>Chrome arcade console</small></span></button>
+          <button type="button" class="style-frame-choice" data-style-frame="pipboi420" data-frame-group="original"><span class="frame-thumbnail frame-thumbnail--pipboi420"><i></i></span><span class="frame-choice-copy"><strong>PIP-BOI 420</strong><small>Original field interface</small></span></button>
+          <button type="button" class="style-frame-choice" data-style-frame="trackstrike" data-frame-group="racing"><span class="frame-thumbnail frame-thumbnail--trackstrike"><i></i></span><span class="frame-choice-copy"><strong>TRACK STRIKE</strong><small>Circuit racing</small></span></button>
+          <button type="button" class="style-frame-choice" data-style-frame="nightshift" data-frame-group="racing"><span class="frame-thumbnail frame-thumbnail--nightshift"><i></i></span><span class="frame-choice-copy"><strong>NIGHT SHIFT</strong><small>Midnight drag racing</small></span></button>
+          <button type="button" class="style-frame-choice" data-style-frame="streetcrew" data-frame-group="gangs"><span class="frame-thumbnail frame-thumbnail--streetcrew"><i></i></span><span class="frame-choice-copy"><strong>STREET CREW</strong><small>Green street faction</small></span></button>
+          <button type="button" class="style-frame-choice" data-style-frame="violetsyndicate" data-frame-group="gangs"><span class="frame-thumbnail frame-thumbnail--violetsyndicate"><i></i></span><span class="frame-choice-copy"><strong>VIOLET SYNDICATE</strong><small>Purple street faction</small></span></button>
+        </div>
+        <h2 class="style-section-space">FX <span>VISUAL QUALITY</span></h2>
+        <div class="fx-choices" role="group" aria-label="Visual effects quality"><button type="button" data-style-effects="full" title="Interactive lighting and animated particles">FULL</button><button type="button" data-style-effects="low" title="Static category lighting, minimal motion">LOW</button><button type="button" data-style-effects="off" title="Disable optional effects and decorative motion">OFF</button></div>
+        <p id="fxDescription" class="fx-description" aria-live="polite"></p>
+      </section>
+      <section class="style-config" aria-labelledby="configSelectTitle">
+        <h2 id="configSelectTitle">02 <span>LIVE PREVIEW</span></h2>
+        <div id="stylePreview" class="style-preview" data-frame="streetglass" data-theme="theme-2" data-bar="segmented">
+          <div class="preview-frame"><div class="preview-glass"><div class="preview-heading"><b id="previewFrameTitle">STREET GLASS</b><small>RS // PROGRESS</small></div>
+          <div class="preview-content"><div class="preview-item"><img src="assets/items/hamburger.png" alt="Hamburger item preview"></div><div class="preview-task"><small>CONSUMING ITEM</small><strong>EATING HAMBURGER</strong><div class="preview-progress"><i></i></div><div class="preview-metrics"><span id="previewProgressLabel">0% COMPLETE</span><span id="previewRemaining">6.0S LEFT</span></div></div></div></div>
+          <div class="arcade-rim" aria-hidden="true"></div>
+          <div class="dock-backing" aria-hidden="true"></div>
+          <div class="preview-dock" aria-hidden="true"><small>USING HAMBURGER</small><div class="preview-dock-row"><span class="preview-dock-track"><i></i></span><b id="previewDockPercent">0%</b><em id="previewDockTime">00:06.0</em></div></div></div>
+        </div>
+        <div class="preview-playback" role="group" aria-label="Preview playback">
+          <button id="previewPlay" type="button">Play</button>
+          <button id="previewReplay" type="button">Replay</button>
+          <input id="previewSeek" type="range" min="0" max="100" step="1" value="0" aria-label="Preview progress">
+          <span id="previewGauge" class="preview-gauge" aria-hidden="true">0%</span>
+        </div>
+        <h2 class="style-section-space">03 <span>THEME COLORS</span></h2>
+        <div class="style-swatches" id="styleSwatches" aria-label="Choose accent color">
+          <button type="button" data-style-theme="default" style="--swatch:#a7f462" aria-label="Pip green" title="Pip Green"></button>
+          <button type="button" data-style-theme="theme-1" style="--swatch:#faca67" aria-label="Amber" title="Amber"></button>
+          <button type="button" data-style-theme="theme-2" style="--swatch:#67e9fa" aria-label="Cyan" title="Cyan"></button>
+          <button type="button" data-style-theme="theme-3" style="--swatch:#ff6378" aria-label="Crimson" title="Crimson"></button>
+          <button type="button" data-style-theme="theme-4" style="--swatch:#ba91ff" aria-label="Violet" title="Violet"></button>
+          <button type="button" data-style-theme="theme-5" style="--swatch:#5b98ff" aria-label="Electric blue" title="Electric Blue"></button>
+          <button type="button" data-style-theme="theme-6" style="--swatch:#ff7cc3" aria-label="Rose" title="Rose"></button>
+        </div>
+        <h2 class="style-section-space">04 <span>PROGRESS ANIMATIONS</span></h2>
+        <div class="style-bars" id="styleBars">
+          <button type="button" data-style-bar="auto">AUTO</button><button type="button" data-style-bar="segmented">SEGMENTS</button><button type="button" data-style-bar="pulse">PULSE</button><button type="button" data-style-bar="race">RACE</button><button type="button" data-style-bar="dots">DOT GRID</button><button type="button" data-style-bar="liquid">LIQUID</button>
+        </div>
+      </section>
+    </div>
+    <div class="style-bottom"><span>Settings are saved per player. Select a category to browse chassis designs.</span><div class="style-actions"><button type="button" id="styleEditorReset" class="style-secondary">RESET</button><button type="button" id="styleEditorSave" class="style-primary">SAVE STYLE</button></div></div>
   </div>
-
-  <script src="rs-uiscale.js"></script>
-  <script src="script.js"></script>
-</body>
-</html>
+</div>
+<script src="script.js?v=4.4.7"></script><script src="customizer.js?v=4.4.7"></script><script src="effects.js?v=4.4.7"></script></body></html>

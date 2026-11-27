@@ -8,7 +8,7 @@ A customizable FiveM progress interface with ten device-inspired frames, animate
 
 [Free on Tebex](https://reality-sucks-rp-webstore.tebex.io/package/7667590) | [Website](https://realitysucksrp.github.io/) | [Discord](https://discord.gg/e9V3rPHySx) | [YouTube](https://www.youtube.com/@RealitySucksRP) | [All free scripts](https://reality-sucks-rp-webstore.tebex.io/category/free-scripts)
 
-> **Version availability:** the screenshots and feature overview below depict the current Tebex Studio edition (4.4.17 supplied package). The GitHub source currently remains at 4.3.0. Get the Studio edition from the Tebex listing until the GitHub source and release ZIP are synchronized.
+> **Version:** 4.4.17. The GitHub source matches the supplied Studio package.
 
 ## Frame Studio
 
@@ -51,7 +51,7 @@ QBCore and Qbox support QB-compatible progress calls; ESX supports the ESX progr
 
 Run `rsprogressdiag` from client F8 to check the installed version and provider state.
 
-[Installation guide](INSTALL.md) | [Developer API](DEVELOPER-API.md) | [Existing GitHub release (older)](https://github.com/RealitySucksRP/rsgta-progressbar/releases)
+[Installation guide](INSTALL.md) | [Developer API](DEVELOPER-API.md) | [Download ZIP](https://github.com/RealitySucksRP/rsgta-progressbar/releases/latest/download/progressbar.zip) | [GitHub releases](https://github.com/RealitySucksRP/rsgta-progressbar/releases)
 
 ## License
 

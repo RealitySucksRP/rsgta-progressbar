@@ -1,10 +1,10 @@
-# License — RS Field Terminal Progressbar
+# License — RS Progressbar Studio
 
 **SPDX-License-Identifier:** `GPL-3.0-only`  
-**Release:** 4.1.0  
+**Release:** 4.4.16  
 **Copyright:** © 2026 William Brito / RealitySucksRP for original modifications
 
-RS Field Terminal Progressbar is a modified work based in part on `swkeep/keep-progressbar`, which is distributed under the GNU General Public License version 3.
+RS Progressbar Studio (formerly RS Field Terminal Progressbar) is a modified work based in part on `swkeep/keep-progressbar`, which is distributed under the GNU General Public License version 3.
 
 This complete work is distributed under **GNU GPL version 3 only**. The full license text is included in `COPYING`.
 

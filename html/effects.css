@@ -1,0 +1,66 @@
+/* 4.4.6: original dependency-free paint layers; frame cutouts and tracks unchanged. */
+.style-body{scrollbar-width:none;-ms-overflow-style:none}
+.style-body::-webkit-scrollbar{display:none}
+.fx-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.fx-choices button{border:1px solid #4c6881;background:#152538;color:#bcd2e7;border-radius:6px;padding:8px 4px;font-size:10px;font-weight:850;letter-spacing:.6px}
+.fx-choices button:hover,.fx-choices button.is-selected{border-color:#7ce5ff;background:#244356;color:#e8faff}
+.fx-choices button.is-selected{box-shadow:inset 0 -2px #73e6ff}
+.fx-description{font-size:10px;color:#9eb7cf;line-height:1.3;margin:7px 0 0}
+.style-frame-choice[data-style-frame="streetglass"]{--card-accent:#68d9ff}
+.style-frame-choice[data-style-frame="neonrunner"]{--card-accent:#b98cff}
+.style-frame-choice[data-style-frame="carbonracer"]{--card-accent:#ffad62}
+.style-frame-choice[data-style-frame="tactical"]{--card-accent:#a3d98b}
+.style-frame-choice[data-style-frame="arcade"]{--card-accent:#ff81c6}
+.style-editor:not([data-effects="off"]) .style-frame-choice.is-selected{border-color:var(--card-accent);box-shadow:inset 0 0 0 1px var(--card-accent)}
+.style-editor:not([data-effects="off"]) .style-frame-choice.is-selected::before{background:var(--card-accent);box-shadow:none}
+.style-editor:not([data-effects="off"]) .style-frame-choice.is-selected::after{border-color:var(--card-accent);color:var(--card-accent)}
+.style-editor[data-effects="full"] .style-frame-choice.fx-hover{transform:perspective(650px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));background:radial-gradient(ellipse at var(--mx,50%) var(--my,50%),#36566b 0%,#1b3045 37%,#121c2d 80%);border-color:var(--card-accent)}
+.style-editor[data-effects="full"] .style-frame-choice.fx-hover .frame-thumbnail{transform:translateY(-1px) scale(1.035);transition:transform .14s ease}
+.style-editor[data-effects="full"] .style-preview.fx-hover{border-color:var(--preview-accent);box-shadow:inset 0 0 24px #0008,0 0 18px var(--preview-soft)}
+.style-editor[data-effects="full"] .style-preview.fx-hover .preview-item img{transform:perspective(360px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(1.04);transition:transform .16s ease}
+.style-editor[data-effects="full"] .style-preview.fx-hover .preview-glass{background:radial-gradient(ellipse at var(--mx,50%) var(--my,50%),var(--preview-soft),transparent 70%),linear-gradient(160deg,var(--preview-bg),#050a12)}
+.style-preview .preview-gauge,.preview-gauge{font-variant-numeric:tabular-nums}
+#terminal-wrapper[data-category="general"]{--category-accent:#81d9ff}
+#terminal-wrapper[data-category="consume"]{--category-accent:#ffbd70}
+#terminal-wrapper[data-category="medical"]{--category-accent:#ff8598}
+#terminal-wrapper[data-category="craft"]{--category-accent:#beabff}
+#terminal-wrapper[data-category="vehicle"]{--category-accent:#70b8ff}
+#terminal-wrapper[data-category="search"]{--category-accent:#f2d578}
+#terminal-wrapper[data-category="carry"]{--category-accent:#87ddd9}
+#terminal-wrapper[data-category="gather"]{--category-accent:#9bdd8e}
+#terminal-wrapper[data-category="misc"]{--category-accent:#c1cad8}
+#terminal-wrapper:not([data-frame="pipboi420"]):not([data-effects="off"]) .side-category.is-active{border-left:2px solid var(--category-accent,var(--screen-accent));color:var(--category-accent,var(--screen-accent))}
+#terminal-wrapper:not([data-frame="pipboi420"]):not([data-effects="off"]) .side-category.is-active span{color:inherit}
+/* One clipped particle plane per screen; no canvas, no DOM particle spawning. */
+#terminal-wrapper:not([data-frame="pipboi420"])[data-effects="full"] .scanner-field::after,
+.style-preview[data-effects="full"] .preview-item::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;opacity:.48;background-image:radial-gradient(circle at 8% 73%,#fff 0 1px,transparent 2px),radial-gradient(circle at 25% 14%,var(--fx-accent) 0 1px,transparent 2px),radial-gradient(circle at 69% 74%,var(--fx-accent) 0 1.5px,transparent 2.5px),radial-gradient(circle at 89% 28%,#fff 0 .8px,transparent 2px),radial-gradient(circle at 46% 43%,var(--fx-accent) 0 1px,transparent 2px);animation:rsFxFloat 3.1s ease-in-out infinite alternate}
+#terminal-wrapper{--fx-accent:var(--screen-accent)}
+.style-preview{--fx-accent:var(--preview-accent)}
+.style-preview .preview-item{position:relative}
+.style-preview[data-effects="full"].fx-hover .preview-item::after{animation-name:rsFxFloat;translate:var(--px,0px) var(--py,0px)}
+@keyframes rsFxFloat{from{transform:translate3d(-3px,4px,0);opacity:.2}to{transform:translate3d(4px,-5px,0);opacity:.65}}
+#terminal-wrapper:not([data-frame="pipboi420"])[data-effects="full"] .scanner-field::before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(110deg,transparent 38%,var(--screen-soft) 49%,transparent 60%);opacity:.3;animation:rsFxSweep 3.8s ease-in-out infinite;transform:translateX(-100%)}
+@keyframes rsFxSweep{0%,20%{transform:translateX(-100%)}75%,100%{transform:translateX(100%)}}
+#terminal-wrapper:not([data-frame="pipboi420"])[data-result="complete"]{--result-color:#8ef4ac}
+#terminal-wrapper:not([data-frame="pipboi420"])[data-result="cancelled"]{--result-color:#ff8697}
+#terminal-wrapper:not([data-frame="pipboi420"]):not([data-effects="off"]):is([data-result="complete"],[data-result="cancelled"]) .meta-right{color:var(--result-color)}
+#terminal-wrapper:not([data-frame="pipboi420"]):not([data-effects="off"]):is([data-result="complete"],[data-result="cancelled"]) .main-progress-row{border-color:var(--result-color)}
+#terminal-wrapper:not([data-frame="pipboi420"])[data-effects="full"]:is([data-result="complete"],[data-result="cancelled"]) .main-progress-row{animation:rsFxResult .22s ease-out both}
+.style-preview[data-effects="full"][data-result="complete"] .preview-progress{animation:rsFxResult .22s ease-out both;--result-color:#8ef4ac}
+@keyframes rsFxResult{from{box-shadow:inset 0 0 9px var(--result-color)}to{box-shadow:inset 0 0 0 transparent}}
+/* LOW retains static accents and progress width; OFF disables decorative animation. */
+#terminal-wrapper:not([data-frame="pipboi420"]):is([data-effects="low"],[data-effects="off"]) *,
+#terminal-wrapper:not([data-frame="pipboi420"]):is([data-effects="low"],[data-effects="off"]) *::after,
+#terminal-wrapper:not([data-frame="pipboi420"]):is([data-effects="low"],[data-effects="off"]) *::before,
+.style-preview:is([data-effects="low"],[data-effects="off"]) *,
+.style-preview:is([data-effects="low"],[data-effects="off"]) *::after,
+.style-preview:is([data-effects="low"],[data-effects="off"]) *::before{animation:none!important}
+:is(#terminal-wrapper:not([data-frame="pipboi420"]),.style-preview):is([data-effects="low"],[data-effects="off"]) :is(.progress-fill,.dock-fill,.preview-progress i,.preview-dock-track i)::after{display:none}
+#terminal-wrapper:not([data-frame="pipboi420"]):not(.is-visible) *,#terminal-wrapper:not([data-frame="pipboi420"]):not(.is-visible) *::after,#terminal-wrapper:not([data-frame="pipboi420"]):not(.is-visible) *::before{animation-play-state:paused!important}
+.style-preview[data-playing="false"] .preview-item::after{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){
+ #terminal-wrapper:not([data-frame="pipboi420"]) *,#terminal-wrapper:not([data-frame="pipboi420"]) *::before,#terminal-wrapper:not([data-frame="pipboi420"]) *::after,.style-editor *, .style-editor *::before,.style-editor *::after{animation:none!important;transition:none!important}
+ .style-editor[data-effects="full"] .fx-hover,.style-editor[data-effects="full"] .fx-hover img{transform:none!important}
+}
+
+.style-frame-choice[data-style-frame="pipboi420"]{--card-accent:#a7f462}

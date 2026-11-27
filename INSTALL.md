@@ -1,4 +1,4 @@
-# RSGTA Modern Progressbar — Server Owner Quick Start
+# RS Progressbar Studio — Server Owner Quick Start
 
 This is one framework-neutral build. Do not maintain separate Legacy, Enhanced, Qbox, QBCore or ESX copies.
 
@@ -44,7 +44,7 @@ ensure progressbar
 ensure progressbar
 ```
 
-The progressbar has no framework or inventory dependency. It only needs to be running before a resource calls it.
+The progressbar has no framework, inventory or external bridge dependency. It only needs to be running before a resource calls it.
 
 ## Qbox and ox_lib
 
@@ -96,7 +96,7 @@ That resource probably calls `lib.progressBar()` directly. This progressbar does
 
 ### Progress completes visually but gameplay callback does not run
 
-Run `rsfieldqbtest` with dev mode enabled. v4.3.0 keeps Lua-authoritative completion and a completion ledger specifically to protect QB-compatible callback paths.
+Run `rsfieldqbtest` with dev mode enabled. The resource uses Lua-authoritative completion and a completion ledger specifically to protect QB-compatible callback paths.
 
 ### Player controls or inventory remain busy
 
@@ -106,3 +106,18 @@ The resource owns a watchdog and cleanup path. Capture the F8 output from `rspro
 ### ESX says `esx_progressbar` is missing even though `progressbar` is installed
 
 First verify the server is on a current artifact. FiveM Enhanced had a `provide` / `GetResourceState` regression that was fixed in the August 2026 Enhanced patches. On an older affected artifact, update the artifact. As a temporary compatibility workaround, starting `progressbar` before `es_extended` also ensures the provider is present before ESX caches addon availability.
+
+## Original field-terminal display fit
+
+The original case image is stored at `html/assets/pipboi-420-shell.webp`. Do not remove it, since the CRT glass is intentionally transparent and the dynamic HTML screen sits behind the cutout. The complete frame and its live menu scale as one unit. Set `Config.ui.scale` (0.60 to 1.25) or `Config.ui.bottomOffset` if you want a smaller display or more clearance from other HUD elements. No separate image dependency is required.
+
+
+## Built-in smart presets
+
+Version 4.3.5 adds built-in fallback candidates for common item and tool names so server owners do not have to alias every basic consumable manually.
+Examples include `water`, `bandage`, `firstaid`, `medkit`, `cigarette`, `joint`, `beer`, `whiskey`, `vodka`, `lockpick`, `advancedlockpick`, and `hotwirekit`.
+Server-owner aliases in `Config.assetImages.aliases` still override these defaults.
+
+## Support information
+
+For installation issues, include the `rsprogressdiag` output, framework and version, calling resource and API, ox_lib status, duplicate-provider status, and client F8/server-console errors.

@@ -1,10 +1,10 @@
 fx_version 'cerulean'
 game 'gta5'
-name 'RS Field Terminal Progressbar'
+name 'RS Progressbar Studio'
 author 'RealitySucksRP / William Brito'
-description 'Universal field-terminal progress system for QBCore, Qbox, ESX, ox-style integrations, and standalone FiveM resources.'
+description 'Universal multi-frame progress system for QBCore, Qbox, ESX, ox-style integrations, and standalone FiveM resources.'
 rs_field_terminal_progressbar 'yes'
-version '4.3.0'
+version '4.4.17'
 
 ui_page 'html/index.html'
 
@@ -20,9 +20,20 @@ server_script 'lua/server.lua'
 files {
     'html/index.html',
     'html/rs-uiscale.js',
+    'html/assets/pipboi-420-shell.webp',
+    'html/assets/rs-logo.png',
+    'html/assets/frames/*.webp',
+    'html/assets/vehicles/*',
+    'html/assets/items/*',
+    'html/assets/categories/*',
     'html/style.css',
     'html/themes.css',
+    'html/frames.css',
+    'html/customizer.css',
+    'html/customizer.js',
     'html/script.js',
+    'html/effects.css',
+    'html/effects.js',
 }
 
 -- Keep the extracted folder named exactly `progressbar` for maximum compatibility.
